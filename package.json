@@ -7,7 +7,10 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "scrape": "node scraper.js"
+    "scrape": "node scraper.js",
+    "scrape:race-card": "node scraper.js race-card",
+    "debug:race-card": "node advanced-debug-scraper.js",
+    "test:strategies": "node scraper-alternative.js"
   },
   "dependencies": {
     "express": "^4.18.2",

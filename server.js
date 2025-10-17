@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import db from './db.js';
-import { scrapeCompletedRaces, formatAsJSON } from './scraper.js';
+import { scrapeCompletedRaces, formatAsJSON, scrapeRaceCardByUrl, formatRaceCardAsJSON } from './scraper.js';
 
 dotenv.config();
 
@@ -27,6 +27,24 @@ app.get('/api/scrape/completed-races', async (req, res) => {
   } catch (error) {
     console.error('Scraper error:', error);
     res.status(500).json({ error: 'Failed to scrape racing results', message: error.message });
+  }
+});
+
+// Scraper endpoint - Get race card data from a specific race URL
+app.post('/api/scrape/race-card', async (req, res) => {
+  try {
+    const { raceUrl } = req.body;
+    
+    if (!raceUrl) {
+      return res.status(400).json({ error: 'Missing required field: raceUrl' });
+    }
+
+    const horses = await scrapeRaceCardByUrl(raceUrl);
+    const jsonOutput = formatRaceCardAsJSON(horses, raceUrl);
+    res.json(jsonOutput);
+  } catch (error) {
+    console.error('Race card scraper error:', error);
+    res.status(500).json({ error: 'Failed to scrape race card', message: error.message });
   }
 });
 

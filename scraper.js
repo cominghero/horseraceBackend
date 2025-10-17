@@ -120,6 +120,175 @@ function isRaceResult(text) {
 }
 
 /**
+ * Scrapes race card data from a specific race URL
+ * Extracts horse numbers, names, ranks, and betting odds
+ * @param {string} raceUrl - The race card URL to scrape
+ * @returns {Promise<Array>} Array of horse data with odds
+ */
+export async function scrapeRaceCardByUrl(raceUrl) {
+  try {
+    console.log(`\n📍 Fetching race card from: ${raceUrl}`);
+    
+    const response = await axios.get(raceUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      }
+    });
+
+    const $ = cheerio.load(response.data);
+    const horses = [];
+
+    // Find the main race card container
+    const racecardBody = $('div[class*="racecardBody_"]');
+    
+    if (racecardBody.length === 0) {
+      console.warn('⚠️ Race card body container not found');
+      return [];
+    }
+
+    console.log(`✅ Found race card container`);
+
+    // Get all direct child divs
+    const allDivs = racecardBody.find('> div');
+    console.log(`📊 Found ${allDivs.length} direct child divs in race card body`);
+
+    // Process each horse (skip first div, start from second)
+    let horseCount = 0;
+    allDivs.each((index, element) => {
+      // Skip the first div
+      if (index === 0) {
+        return;
+      }
+
+      const $element = $(element);
+      const elementClass = $element.attr('class') || '';
+      
+      // Check if this is a racecard-outcome element (more flexible matching)
+      if (!elementClass.includes('racecard-outcome')) {
+        return;
+      }
+
+      horseCount++;
+      const rank = horseCount;
+
+      // Extract the three main nested divs
+      const nestedDivs = $element.find('> div');
+      
+      if (nestedDivs.length < 3) {
+        console.warn(`⚠️ Expected 3 nested divs for horse at rank ${rank}, found ${nestedDivs.length}`);
+        return;
+      }
+
+      // ========== FIRST DIV: Horse Number and Name ==========
+      const firstDiv = $(nestedDivs[0]);
+      const horseInfoSpan = firstDiv.find('div > span').first();
+      const horseInfoText = horseInfoSpan.text().trim();
+      
+      // Parse "number.name" format
+      let horseNumber = '';
+      let horseName = '';
+      
+      if (horseInfoText.includes('.')) {
+        const parts = horseInfoText.split('.');
+        horseNumber = parts[0].trim();
+        horseName = parts.slice(1).join('.').trim();
+      } else {
+        horseNumber = horseInfoText.trim();
+        horseName = '';
+      }
+
+      // ========== SECOND DIV: Betting Rates (open, Fluc1, Fluc2) ==========
+      const secondDiv = $(nestedDivs[1]);
+      const rateSpans = secondDiv.find('span');
+      
+      let open = '';
+      let fluc1 = '';
+      let fluc2 = '';
+
+      rateSpans.each((spanIndex, span) => {
+        const spanText = $(span).text().trim();
+        // Try to identify which rate this is by position or class
+        if (spanIndex === 0) {
+          open = spanText;
+        } else if (spanIndex === 1) {
+          fluc1 = spanText;
+        } else if (spanIndex === 2) {
+          fluc2 = spanText;
+        }
+      });
+
+      // ========== THIRD DIV: Fixed Rates (win, place, each way) ==========
+      const thirdDiv = $(nestedDivs[2]);
+      const fixedRateDivs = thirdDiv.find('> div');
+      
+      let winFixed = '';
+      let placeFixed = '';
+      let eachWayFixed = '';
+
+      fixedRateDivs.each((divIndex, div) => {
+        const $div = $(div);
+        // Navigate: div > div > div > button > div > 2nd div > span
+        const targetSpan = $div.find('div > div > button > div > div > span').first();
+        const rateValue = targetSpan.text().trim();
+
+        if (divIndex === 0) {
+          winFixed = rateValue;
+        } else if (divIndex === 1) {
+          placeFixed = rateValue;
+        } else if (divIndex === 2) {
+          eachWayFixed = rateValue;
+        }
+      });
+
+      // Build horse object
+      const horseData = {
+        rank,
+        horseNumber,
+        horseName,
+        odds: {
+          open,
+          fluc1,
+          fluc2,
+          winFixed,
+          placeFixed,
+          eachWayFixed
+        }
+      };
+
+      horses.push(horseData);
+
+      // Log to console for verification
+      console.log(`\n🐴 Rank ${rank} - Horse #${horseNumber}: ${horseName}`);
+      console.log(`   Open: ${open} | Fluc1: ${fluc1} | Fluc2: ${fluc2}`);
+      console.log(`   Win Fixed: ${winFixed} | Place Fixed: ${placeFixed} | Each Way: ${eachWayFixed}`);
+    });
+
+    console.log(`\n✅ Successfully scraped ${horses.length} horses from race card\n`);
+    return horses;
+
+  } catch (error) {
+    console.error('❌ Error scraping race card:', error.message);
+    throw error;
+  }
+}
+
+/**
+ * Format race card results for JSON output
+ * @param {Array} horses - Array of horse data
+ * @param {string} raceUrl - The race URL
+ * @returns {object}
+ */
+export function formatRaceCardAsJSON(horses, raceUrl) {
+  return {
+    timestamp: new Date().toISOString(),
+    source: 'Sportsbet Australia',
+    raceUrl,
+    totalHorses: horses.length,
+    horses
+  };
+}
+
+/**
  * Format results for JSON output
  * @param {Array} results
  * @returns {object}
@@ -130,6 +299,31 @@ export function formatAsJSON(results) {
     source: 'Sportsbet Australia',
     racetracks: results
   };
+}
+
+// Test race card scraper with example URL or provided URL
+async function testRaceCardScraper(providedUrl = null) {
+  try {
+    const exampleUrl = providedUrl || 'https://www.sportsbet.com.au/horse-racing/australia-nz/matamata/race-1-9733540';
+    
+    console.log('\n╔════════════════════════════════════════╗');
+    console.log('║  🐴 Testing Race Card Scraper         ║');
+    console.log('╚════════════════════════════════════════╝\n');
+    
+    console.log('Step 1: Scraping race card with console output verification...\n');
+    const horses = await scrapeRaceCardByUrl(exampleUrl);
+    
+    console.log('\n═══════════════════════════════════════════════');
+    console.log('Step 2: JSON Output\n');
+    const jsonOutput = formatRaceCardAsJSON(horses, exampleUrl);
+    console.log(JSON.stringify(jsonOutput, null, 2));
+    
+    console.log('\n═══════════════════════════════════════════════');
+    console.log(`\n✅ Test completed successfully!\n`);
+
+  } catch (error) {
+    console.error('❌ Test failed:', error.message);
+  }
 }
 
 // Main execution for testing
@@ -163,5 +357,13 @@ async function main() {
 
 // Run if executed directly
 if (import.meta.url === `file://${process.argv[1]}`) {
-  main();
+  // Check for command line argument to choose which test to run
+  const testType = process.argv[2];
+  const urlParam = process.argv[3];
+  
+  if (testType === 'race-card') {
+    testRaceCardScraper(urlParam);
+  } else {
+    main();
+  }
 }

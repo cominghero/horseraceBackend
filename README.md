@@ -22,7 +22,9 @@ npm start
 
 The server will run on `http://localhost:5000` by default.
 
-## Running the Web Scraper
+## Running the Web Scrapers
+
+### Completed Races Scraper
 
 To test the Sportsbet racing schedule scraper:
 
@@ -37,6 +39,21 @@ This will:
 4. Output to console for verification
 5. Display formatted JSON output
 
+### Race Card Scraper
+
+To test the race card scraper (extracts horse odds and details):
+
+```bash
+npm run scrape:race-card
+```
+
+This will:
+1. Fetch a race card page from Sportsbet
+2. Extract horse numbers, names, and betting odds
+3. Parse open odds, fluctuation odds, and fixed odds
+4. Output console verification first
+5. Display formatted JSON output with all horse data
+
 ## API Endpoints
 
 ### Health Check
@@ -44,6 +61,9 @@ This will:
 
 ### Web Scraper
 - `GET /api/scrape/completed-races` - Scrapes Sportsbet for completed Australian race results
+- `POST /api/scrape/race-card` - Scrapes a specific race card URL for horse odds and details
+  - **Request body**: `{ "raceUrl": "https://www.sportsbet.com.au/horse-racing/..." }`
+  - **Returns**: Array of horses with ranks, numbers, names, and betting odds
 
 ### Races
 - `GET /api/races` - Get all races
