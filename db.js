@@ -1,5 +1,5 @@
 import { Low } from 'lowdb';
-import { JSONFile } from 'lowdb/node';
+import { JSONFile } from 'lowdb';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 

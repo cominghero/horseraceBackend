@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import db from './db.js';
-import { scrapeCompletedRaces, formatAsJSON, scrapeRaceCardByUrl, formatRaceCardAsJSON } from './scraper.js';
+import { scrapeCompletedRaces, formatAsJSON, scrapeRaceCardByUrl, formatRaceCardAsJSON, scrapeAllCompletedRacesWithCards } from './scraper.js';
 
 dotenv.config();
 
@@ -45,6 +45,26 @@ app.post('/api/scrape/race-card', async (req, res) => {
   } catch (error) {
     console.error('Race card scraper error:', error);
     res.status(500).json({ error: 'Failed to scrape race card', message: error.message });
+  }
+});
+
+// Scraper endpoint - Scrape all completed races with race cards and save to DB
+app.post('/api/scrape/all-races', async (req, res) => {
+  try {
+    console.log('\n📡 API Request: Scraping all completed races with race cards...\n');
+    
+    const allRaceData = await scrapeAllCompletedRacesWithCards(db);
+    
+    res.json({
+      status: 'success',
+      timestamp: new Date().toISOString(),
+      source: 'Sportsbet Australia',
+      totalRaces: allRaceData.length,
+      data: allRaceData
+    });
+  } catch (error) {
+    console.error('Scrape all races error:', error);
+    res.status(500).json({ error: 'Failed to scrape all races', message: error.message });
   }
 });
 
