@@ -83,6 +83,63 @@ function logScrapingResults(allRacetracksData, totalRaceCount) {
 }
 
 /**
+ * Log completed races to a text file
+ * @param {Array} completedRacesData - Result from scrapeCompletedRaces()
+ * @returns {string} Path to the log file
+ */
+export function logCompletedRaces(completedRacesData) {
+  try {
+    ensureLogsDir();
+    
+    const timestamp = new Date().toISOString();
+    const dateStr = new Date().toLocaleDateString('en-AU').replace(/\//g, '-');
+    const timeStr = new Date().toLocaleTimeString('en-AU').replace(/:/g, '-');
+    const filename = `completed-races-${dateStr}_${timeStr}.txt`;
+    const filepath = path.join(LOGS_DIR, filename);
+    
+    let logContent = `COMPLETED RACES LOG\n`;
+    logContent += `${'='.repeat(80)}\n`;
+    logContent += `Timestamp: ${timestamp}\n`;
+    logContent += `Total Racetracks: ${completedRacesData.length}\n`;
+    logContent += `${'='.repeat(80)}\n\n`;
+    
+    // Calculate total races
+    let totalRaceCount = 0;
+    completedRacesData.forEach(track => {
+      totalRaceCount += track.completedRaces.length;
+    });
+    logContent += `Total Races: ${totalRaceCount}\n\n`;
+    
+    // Log details for each racetrack
+    completedRacesData.forEach((trackData, trackIndex) => {
+      const { racetrack, country, tracklinkUrl, completedRaces } = trackData;
+      
+      logContent += `\n[${ trackIndex + 1}] RACETRACK: ${racetrack}\n`;
+      logContent += `-`.repeat(80) + `\n`;
+      logContent += `Country: ${country}\n`;
+      logContent += `Track URL: ${tracklinkUrl}\n`;
+      logContent += `Total Races: ${completedRaces.length}\n\n`;
+      
+      // Log each race
+      completedRaces.forEach((race, raceIndex) => {
+        const { raceNumber, result, link } = race;
+        
+        logContent += `  ${raceNumber}. Result: ${result}\n`;
+        logContent += `     Link: ${link || 'N/A'}\n\n`;
+      });
+    });
+    
+    // Write to file
+    fs.writeFileSync(filepath, logContent, 'utf-8');
+    console.log(`📄 Completed races logged to: ${filepath}`);
+    
+    return filepath;
+  } catch (error) {
+    console.error('❌ Error logging completed races:', error.message);
+  }
+}
+
+/**
  * Scrapes completed race results from Sportsbet
  * @returns {Promise<Array>} Array of racetracks with completed results
  */
@@ -128,15 +185,19 @@ export async function scrapeCompletedRaces() {
       // Get all race cells (td elements after the first one)
       const raceCells = $row.find('td').slice(1);
       const completedRaces = [];
+      let raceIndex = 0; // Track actual races found
 
       raceCells.each((cellIndex, cell) => {
         const $cell = $(cell);
+        let raceFoundInCell = false; // Flag to prevent duplicate adds per cell
         
         // Look for race results (numbers separated by commas)
         // Results are in: div > div (second div) > div > div
         const resultDivs = $cell.find('div > div');
         
         resultDivs.each((divIndex, div) => {
+          if (raceFoundInCell) return; // Skip if already found a race in this cell
+          
           const $div = $(div);
           
           // Check if this div contains two sub-divs
@@ -149,24 +210,29 @@ export async function scrapeCompletedRaces() {
             // Check if it matches the pattern of race results (e.g., "4,5,3")
             if (isRaceResult(resultText)) {
               const raceLink = $cell.find('a').attr('href');
+              raceIndex++;
               completedRaces.push({
-                raceNumber: `R${cellIndex + 1}`,
+                raceNumber: `R${raceIndex}`,
                 result: resultText,
                 link: raceLink || null
               });
+              raceFoundInCell = true; // Mark that we found a race in this cell
             }
           }
         });
 
-        // Alternative: Check direct text content for results
-        const cellText = $cell.text().trim();
-        if (isRaceResult(cellText) && completedRaces.length === 0) {
-          const raceLink = $cell.find('a').attr('href');
-          completedRaces.push({
-            raceNumber: `R${cellIndex + 1}`,
-            result: cellText,
-            link: raceLink || null
-          });
+        // Alternative: Check direct text content for results (only if nested check didn't find anything)
+        if (!raceFoundInCell) {
+          const cellText = $cell.text().trim();
+          if (isRaceResult(cellText)) {
+            const raceLink = $cell.find('a').attr('href');
+            raceIndex++;
+            completedRaces.push({
+              raceNumber: `R${raceIndex}`,
+              result: cellText,
+              link: raceLink || null
+            });
+          }
         }
       });
 
@@ -201,14 +267,19 @@ function isRaceResult(text) {
 /**
  * Scrapes race card data from a specific race URL
  * Extracts horse numbers, names, ranks, and betting odds
- * @param {string} raceUrl - The race card URL to scrape
+ * @param {string} raceUrl - The race card URL to scrape (can be relative or absolute)
  * @returns {Promise<Array>} Array of horse data with odds
  */
 export async function scrapeRaceCardByUrl(raceUrl) {
   try {
-    console.log(`\n📍 Fetching race card from: ${raceUrl}`);
+    // Convert relative URL to full URL if needed
+    const fullUrl = raceUrl.startsWith('http') 
+      ? raceUrl 
+      : `https://www.sportsbet.com.au${raceUrl}`;
     
-    const response = await axios.get(raceUrl, {
+    console.log(`\n📍 Fetching race card from: ${fullUrl}`);
+    
+    const response = await axios.get(fullUrl, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
       }
@@ -217,33 +288,55 @@ export async function scrapeRaceCardByUrl(raceUrl) {
     const $ = cheerio.load(response.data);
     const horses = [];
 
-    // Find the main race card container
-    const racecardBody = $('div[class*="racecardBody_"]');
+    // Find the main race card container using data-automation-id
+    // Try multiple selectors since Sportsbet may use different container IDs
+    let racecardBody = $('[data-automation-id*="racecard"]');
+    
+    // If not found, look for elements containing outcome cards (horses)
+    if (racecardBody.length === 0) {
+      racecardBody = $('[data-automation-id*="outcome"]').parent();
+    }
+    
+    // Fallback to looking for divs with outcome card classes
+    if (racecardBody.length === 0) {
+      racecardBody = $('div[class*="outcomeCard_"]').parent();
+    }
     
     if (racecardBody.length === 0) {
       console.warn('⚠️ Race card body container not found');
-      return [];
+      console.log('ℹ️ Trying to find outcome cards directly...');
+      // Continue anyway and look for outcome cards directly
+    } else {
+      console.log(`✅ Found race card container`);
     }
 
-    console.log(`✅ Found race card container`);
+    // Get all outcome cards (horses) - either from container or directly
+    let allDivs = racecardBody.find('[data-automation-id*="outcome"]');
+    
+    // If no outcome cards found through container, search entire page
+    if (allDivs.length === 0) {
+      allDivs = $('[data-automation-id*="outcome"]');
+    }
+    
+    // Fallback: look for outcomeCard classes
+    if (allDivs.length === 0) {
+      allDivs = $('div[class*="outcomeCard_"]');
+    }
+    
+    console.log(`📊 Found ${allDivs.length} outcome cards (horses) in race card`);
 
-    // Get all direct child divs
-    const allDivs = racecardBody.find('> div');
-    console.log(`📊 Found ${allDivs.length} direct child divs in race card body`);
-
-    // Process each horse (skip first div, start from second)
+    // Process each horse
     let horseCount = 0;
     allDivs.each((index, element) => {
-      // Skip the first div
-      if (index === 0) {
-        return;
-      }
-
       const $element = $(element);
+      
+      // Verify this is an outcome card (horse entry)
+      const dataId = $element.attr('data-automation-id') || '';
       const elementClass = $element.attr('class') || '';
       
-      // Check if this is a outcomeCard element (horse entry)
-      if (!elementClass.includes('outcomeCard_')) {
+      // Check if it's a valid outcome/horse card
+      const isOutcomeCard = dataId.includes('outcome') || elementClass.includes('outcomeCard_');
+      if (!isOutcomeCard) {
         return;
       }
 
@@ -273,72 +366,76 @@ export async function scrapeRaceCardByUrl(raceUrl) {
         horseName = horseMatch[2].trim();
       }
 
-      // Extract odds values from the text
-      // The odds appear concatenated at the end before 'EW'
-      // Pattern: "15.0012.0013.0014.003.60EW" means: 15.00|12.00|13.00|14.00|3.60
-      let open = '';
-      let fluc1 = '';
-      let fluc2 = '';
-      let winFixed = '';
-      let placeFixed = '';
-      let eachWayFixed = '';
+      // Extract odds using data-automation-id attributes (more reliable)
+      let open = '0.00';
+      let fluc1 = '0.00';
+      let fluc2 = '0.00';
+      let winFixed = '0.00';
+      let placeFixed = '0.00';
+      let eachWayFixed = '0.00';
 
-      // Find the odds section - extract everything between last letter+number and 'EW'
-      const ewMatch = containerText.match(/(.+?)EW/);
-      if (ewMatch) {
-        const oddsSection = ewMatch[1];
+      // Method 1: Try to extract odds from data-automation-id elements
+      // Elements have ids like: "racecard-outcome-{index}-{type}-price"
+      const rankIndex = rank - 1; // Convert to 0-based index
+      
+      // Try different attribute name patterns used by Sportsbet
+      const priceSelectors = [
+        { attr: `data-automation-id="racecard-outcome-${rankIndex}-O-price"`, field: 'open' },
+        { attr: `data-automation-id="racecard-outcome-${rankIndex}-F1-price"`, field: 'fluc1' },
+        { attr: `data-automation-id="racecard-outcome-${rankIndex}-F2-price"`, field: 'fluc2' },
+        { attr: `data-automation-id="racecard-outcome-${rankIndex}-W-price"`, field: 'winFixed' },
+        { attr: `data-automation-id="racecard-outcome-${rankIndex}-L-price"`, field: 'placeFixed' }, // L = Last (Place)
+        { attr: `data-automation-id="racecard-outcome-${rankIndex}-EW-price"`, field: 'eachWayFixed' },
+      ];
+      
+      let foundAnyOdds = false;
+      priceSelectors.forEach(({ attr, field }) => {
+        // Extract the attribute value from the selector string
+        const selectorAttr = attr.split('"')[1];
+        const priceEl = $element.find(`[data-automation-id="${selectorAttr}"]`);
         
-        // Extract odds using the correct pattern: each odds is digit(s).digit(s)
-        // But we need to get them in the right order from the trainer name onwards
-        // Format: "T: TrainerName15.0012.0013.0014.003.60"
-        // Find where trainer ends and odds begin
-        const trainerMatch = oddsSection.match(/T:\s*([A-Za-z\s]+)(\d+\.\d+)/);
+        if (priceEl.length > 0) {
+          const text = priceEl.text().trim();
+          // Updated regex to handle 1-2 decimal places and comma/dot separators
+          const match = text.match(/(\d+[.,]\d{1,2})/);
+          if (match) {
+            // Normalize comma to dot for consistency
+            const normalizedPrice = match[1].replace(',', '.');
+            eval(`${field} = '${normalizedPrice}'`);
+            foundAnyOdds = true;
+          }
+        }
+      });
+      
+      // Method 2: Fallback - Try to find all price containers and extract in order
+      if (!foundAnyOdds) {
+        // Look for any elements with price data (contains decimal numbers)
+        const allPriceContainers = $element.find('[data-automation-id*="price"]');
         
-        if (trainerMatch) {
-          // Get the part after trainer name
-          const trainerEnd = oddsSection.indexOf(trainerMatch[2]);
-          const oddsString = oddsSection.substring(trainerEnd);
-          
-          // Extract odds values with pattern: digits.twoDigits
-          // This regex matches: optional leading zeros, digits, dot, 2+ digits
-          const oddsMatches = oddsString.match(/(\d+\.?\d{2,})/g) || [];
-          
-          // Process odds matches to extract individual values
-          // Each odds should be separated correctly
-          let odds = [];
-          for (let i = 0; i < oddsMatches.length; i++) {
-            let match = oddsMatches[i];
-            // Handle cases like "15.0012" which should split into "15.00" and "12"
-            // Look for patterns like XX.XXYY where YY starts a new number
-            
-            // For "15.0012", split it properly
-            if (match.match(/\d{2}\.\d{4,}/)) {
-              // This is a concatenated odds like "15.0012"
-              // Extract in pairs: "15.00" then "12.00" or "12"
-              const num = match;
-              const beforeDot = num.substring(0, num.indexOf('.'));
-              const afterDot = num.substring(num.indexOf('.') + 1);
-              
-              odds.push(beforeDot + '.' + afterDot.substring(0, 2));
-              
-              // Check if there are more digits after the first 2
-              if (afterDot.length > 2) {
-                odds.push(afterDot.substring(2));
+        if (allPriceContainers.length > 0) {
+          const prices = [];
+          allPriceContainers.each((idx, el) => {
+            const text = $(el).text().trim();
+            // Updated regex to handle 1-2 decimal places and comma/dot separators
+            const match = text.match(/(\d+[.,]\d{1,2})/);
+            if (match) {
+              // Normalize comma to dot for consistency
+              const normalizedPrice = match[1].replace(',', '.');
+              if (!prices.includes(normalizedPrice)) {
+                prices.push(normalizedPrice);
               }
-            } else {
-              odds.push(match);
             }
-          }
+          });
           
-          // Parse the extracted odds
-          if (odds.length >= 5) {
-            open = parseFloat(odds[0]).toFixed(2);
-            fluc1 = parseFloat(odds[1]).toFixed(2);
-            fluc2 = parseFloat(odds[2]).toFixed(2);
-            winFixed = parseFloat(odds[3]).toFixed(2);
-            eachWayFixed = parseFloat(odds[4]).toFixed(2);
-            placeFixed = eachWayFixed;
-          }
+          // Assign extracted prices to odds fields
+          if (prices.length >= 1) winFixed = prices[0];
+          if (prices.length >= 2) placeFixed = prices[1];
+          if (prices.length >= 3) eachWayFixed = prices[2];
+          if (prices.length >= 4) open = prices[3];
+          if (prices.length >= 5) fluc1 = prices[4];
+          if (prices.length >= 6) fluc2 = prices[5];
+          
+          foundAnyOdds = prices.length > 0;
         }
       }
 
@@ -361,8 +458,14 @@ export async function scrapeRaceCardByUrl(raceUrl) {
 
       // Log to console for verification
       console.log(`\n🐴 Rank ${rank} - Horse #${horseNumber}: ${horseName}`);
-      console.log(`   Open: ${open} | Fluc1: ${fluc1} | Fluc2: ${fluc2}`);
-      console.log(`   Win Fixed: ${winFixed} | Place Fixed: ${placeFixed} | Each Way: ${eachWayFixed}`);
+      console.log(`   📊 Odds: Open=${open} | Fluc1=${fluc1} | Fluc2=${fluc2}`);
+      console.log(`   💰 Fixed: Win=${winFixed} | Place=${placeFixed} | Each Way=${eachWayFixed}`);
+      
+      // Debug: Check if odds are all 0.00 (potential extraction issue)
+      if (open === '0.00' && fluc1 === '0.00' && winFixed === '0.00') {
+        console.log(`   ⚠️  DEBUG: No odds found using standard extraction`);
+        console.log(`   ℹ️  HTML text sample: "${containerText.substring(0, 150)}..."`);
+      }
     });
 
     console.log(`\n✅ Successfully scraped ${horses.length} horses from race card\n`);
@@ -407,6 +510,9 @@ export async function scrapeAllCompletedRacesWithCards(db = null) {
     const completedRacesData = await scrapeCompletedRaces();
     
     console.log(`✅ Found ${completedRacesData.length} racetracks\n`);
+    
+    // Log completed races to file
+    logCompletedRaces(completedRacesData);
 
     // Step 2: For each racetrack, scrape race cards for each race
     console.log('📍 Step 2: Scraping race cards for each race...\n');
@@ -570,6 +676,9 @@ async function main() {
     
     const results = await scrapeCompletedRaces();
     
+    // Log results to file
+    logCompletedRaces(results);
+    
     console.log('\n--- Console Output ---');
     console.log(`Found ${results.length} Australian racetracks with completed races:\n`);
     
@@ -601,6 +710,6 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   if (testType === 'race-card') {
     testRaceCardScraper(urlParam);
   } else {
-    main();
+    main().catch(console.error);
   }
 }

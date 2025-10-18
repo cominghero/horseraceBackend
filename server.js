@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import db from './db.js';
-import { scrapeCompletedRaces, formatAsJSON, scrapeRaceCardByUrl, formatRaceCardAsJSON, scrapeAllCompletedRacesWithCards } from './scraper.js';
+import { scrapeCompletedRaces, formatAsJSON, scrapeRaceCardByUrl, formatRaceCardAsJSON, scrapeAllCompletedRacesWithCards, logCompletedRaces } from './scraper.js';
 
 dotenv.config();
 
@@ -22,6 +22,10 @@ app.get('/api/health', (req, res) => {
 app.get('/api/scrape/completed-races', async (req, res) => {
   try {
     const results = await scrapeCompletedRaces();
+    
+    // Log results to file
+    logCompletedRaces(results);
+    
     const jsonOutput = formatAsJSON(results);
     res.json(jsonOutput);
   } catch (error) {
