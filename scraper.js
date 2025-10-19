@@ -245,8 +245,7 @@ export async function scrapeCompletedRaces() {
           completedRaces: completedRaces
         });
       }
-    });
-
+    });    
     return results;
   } catch (error) {
     console.error('Error scraping Sportsbet:', error.message);
@@ -277,7 +276,7 @@ export async function scrapeRaceCardByUrl(raceUrl) {
       ? raceUrl 
       : `https://www.sportsbet.com.au${raceUrl}`;
     
-    console.log(`\n📍 Fetching race card from: ${fullUrl}`);
+    // console.log(`\n📍 Fetching race card from: ${fullUrl}`);
     
     const response = await axios.get(fullUrl, {
       headers: {
@@ -288,158 +287,111 @@ export async function scrapeRaceCardByUrl(raceUrl) {
     const $ = cheerio.load(response.data);
     const horses = [];
 
-    // Find the main race card container using data-automation-id
-    // Try multiple selectors since Sportsbet may use different container IDs
-    let racecardBody = $('[data-automation-id*="racecard"]');
+    // Find all horse outcome containers
+    // Each horse is in a div with data-automation-id="racecard-outcome-*"
+    const horseContainers = $('div[data-automation-id^="racecard-outcome-"]').filter(function() {
+      return $(this).find('div[data-automation-id="racecard-outcome-name"]').length > 0;
+    });
+    // console.log(horseContainers.length);
     
-    // If not found, look for elements containing outcome cards (horses)
-    if (racecardBody.length === 0) {
-      racecardBody = $('[data-automation-id*="outcome"]').parent();
-    }
+    // if (horseContainers.length === 0) {
+    //   console.warn('⚠️ No horse containers found');
+    //   return horses;
+    // }
     
-    // Fallback to looking for divs with outcome card classes
-    if (racecardBody.length === 0) {
-      racecardBody = $('div[class*="outcomeCard_"]').parent();
-    }
-    
-    if (racecardBody.length === 0) {
-      console.warn('⚠️ Race card body container not found');
-      console.log('ℹ️ Trying to find outcome cards directly...');
-      // Continue anyway and look for outcome cards directly
-    } else {
-      console.log(`✅ Found race card container`);
-    }
+    // console.log(`✅ Found ${horseContainers.length} horses`);
 
-    // Get all outcome cards (horses) - either from container or directly
-    let allDivs = racecardBody.find('[data-automation-id*="outcome"]');
-    
-    // If no outcome cards found through container, search entire page
-    if (allDivs.length === 0) {
-      allDivs = $('[data-automation-id*="outcome"]');
-    }
-    
-    // Fallback: look for outcomeCard classes
-    if (allDivs.length === 0) {
-      allDivs = $('div[class*="outcomeCard_"]');
-    }
-    
-    console.log(`📊 Found ${allDivs.length} outcome cards (horses) in race card`);
-
-    // Process each horse
     let horseCount = 0;
-    allDivs.each((index, element) => {
-      const $element = $(element);
+    horseContainers.each((index, container) => {
+      const $container = $(container);
       
-      // Verify this is an outcome card (horse entry)
-      const dataId = $element.attr('data-automation-id') || '';
-      const elementClass = $element.attr('class') || '';
+      // ========== HORSE NUMBER AND NAME ==========
+      // Located in: div[data-automation-id="racecard-outcome-name"] > span:first
+      const nameSpan = $container.find('div[data-automation-id="racecard-outcome-name"] > span').first();
+      const horseInfoText = nameSpan.text().trim();
       
-      // Check if it's a valid outcome/horse card
-      const isOutcomeCard = dataId.includes('outcome') || elementClass.includes('outcomeCard_');
-      if (!isOutcomeCard) {
-        return;
+      let horseNumber = '';
+      let horseName = '';
+      
+      const horseMatch = horseInfoText.match(/^(\d+)\.\s+(.+)$/);
+      if (horseMatch) {
+        horseNumber = horseMatch[1];
+        horseName = horseMatch[2].trim();
+      } else {
+        console.warn(`⚠️ Could not parse horse info: "${horseInfoText}"`);
+        return; // Skip this horse
       }
 
       horseCount++;
       const rank = horseCount;
 
-      // Extract the nested divs
-      const nestedDivs = $element.find('> div');
+      // ========== FLUCTUATING ODDS ==========
+      // Located in: div[class*="priceFlucsContainer_"] > span (3 spans)
+      const flucContainer = $container.find('div[class*="priceFlucsContainer_"]');
+      const flucSpans = flucContainer.find('> span');
       
-      if (nestedDivs.length < 1) {
-        console.warn(`⚠️ Expected nested divs for horse at rank ${rank}, found ${nestedDivs.length}`);
-        return;
-      }
-
-      // ========== FIRST DIV: All horse data (outcomeDetailsContainer) ==========
-      const firstDiv = $(nestedDivs[0]);
-      const containerText = firstDiv.text().trim();
-      
-      // Extract horse number and name from the beginning
-      // Format: "1. Brave Boy (8)..."
-      let horseNumber = '';
-      let horseName = '';
-      
-      const horseMatch = containerText.match(/^(\d+)\.\s+([A-Za-z\s]+)\s*\(/);
-      if (horseMatch) {
-        horseNumber = horseMatch[1];
-        horseName = horseMatch[2].trim();
-      }
-
-      // Extract odds using data-automation-id attributes (more reliable)
       let open = '0.00';
       let fluc1 = '0.00';
       let fluc2 = '0.00';
+      
+      if (flucSpans.length >= 1) {
+        const openText = $(flucSpans[0]).text().trim();
+        const openMatch = openText.match(/(\d+[.,]\d{1,2})/);
+        if (openMatch) open = openMatch[1].replace(',', '.');
+      }
+      if (flucSpans.length >= 2) {
+        const fluc1Text = $(flucSpans[1]).text().trim();
+        const fluc1Match = fluc1Text.match(/(\d+[.,]\d{1,2})/);
+        if (fluc1Match) fluc1 = fluc1Match[1].replace(',', '.');
+      }
+      if (flucSpans.length >= 3) {
+        const fluc2Text = $(flucSpans[2]).text().trim();
+        const fluc2Match = fluc2Text.match(/(\d+[.,]\d{1,2})/);
+        if (fluc2Match) fluc2 = fluc2Match[1].replace(',', '.');
+      }
+
+      // ========== FIXED ODDS ==========
+      // Located in: div[class*="priceContainer_"] > div[data-automation-id*="L-price"]
+      // Each has button > div > div > div > span (inside the button)
+      const fixedContainer = $container.find('div[class*="priceContainer_"]');
+      const priceDivs = fixedContainer.find('> div[data-automation-id*="L-price"]');
+      
       let winFixed = '0.00';
       let placeFixed = '0.00';
       let eachWayFixed = '0.00';
-
-      // Method 1: Try to extract odds from data-automation-id elements
-      // Elements have ids like: "racecard-outcome-{index}-{type}-price"
-      const rankIndex = rank - 1; // Convert to 0-based index
       
-      // Try different attribute name patterns used by Sportsbet
-      const priceSelectors = [
-        { attr: `data-automation-id="racecard-outcome-${rankIndex}-O-price"`, field: 'open' },
-        { attr: `data-automation-id="racecard-outcome-${rankIndex}-F1-price"`, field: 'fluc1' },
-        { attr: `data-automation-id="racecard-outcome-${rankIndex}-F2-price"`, field: 'fluc2' },
-        { attr: `data-automation-id="racecard-outcome-${rankIndex}-W-price"`, field: 'winFixed' },
-        { attr: `data-automation-id="racecard-outcome-${rankIndex}-L-price"`, field: 'placeFixed' }, // L = Last (Place)
-        { attr: `data-automation-id="racecard-outcome-${rankIndex}-EW-price"`, field: 'eachWayFixed' },
-      ];
-      
-      let foundAnyOdds = false;
-      priceSelectors.forEach(({ attr, field }) => {
-        // Extract the attribute value from the selector string
-        const selectorAttr = attr.split('"')[1];
-        const priceEl = $element.find(`[data-automation-id="${selectorAttr}"]`);
-        
-        if (priceEl.length > 0) {
-          const text = priceEl.text().trim();
-          // Updated regex to handle 1-2 decimal places and comma/dot separators
-          const match = text.match(/(\d+[.,]\d{1,2})/);
-          if (match) {
-            // Normalize comma to dot for consistency
-            const normalizedPrice = match[1].replace(',', '.');
-            eval(`${field} = '${normalizedPrice}'`);
-            foundAnyOdds = true;
-          }
+      // Extract from first price div (WIN)
+      if (priceDivs.length >= 1) {
+        const winSpan = $(priceDivs[0]).find('button span[data-automation-id*="odds-button-text"]').first();
+        if (winSpan.length > 0) {
+          const winText = winSpan.text().trim();
+          const winMatch = winText.match(/(\d+[.,]\d{1,2})/);
+          if (winMatch) winFixed = winMatch[1].replace(',', '.');
         }
-      });
+      }
       
-      // Method 2: Fallback - Try to find all price containers and extract in order
-      if (!foundAnyOdds) {
-        // Look for any elements with price data (contains decimal numbers)
-        const allPriceContainers = $element.find('[data-automation-id*="price"]');
-        
-        if (allPriceContainers.length > 0) {
-          const prices = [];
-          allPriceContainers.each((idx, el) => {
-            const text = $(el).text().trim();
-            // Updated regex to handle 1-2 decimal places and comma/dot separators
-            const match = text.match(/(\d+[.,]\d{1,2})/);
-            if (match) {
-              // Normalize comma to dot for consistency
-              const normalizedPrice = match[1].replace(',', '.');
-              if (!prices.includes(normalizedPrice)) {
-                prices.push(normalizedPrice);
-              }
-            }
-          });
-          
-          // Assign extracted prices to odds fields
-          if (prices.length >= 1) winFixed = prices[0];
-          if (prices.length >= 2) placeFixed = prices[1];
-          if (prices.length >= 3) eachWayFixed = prices[2];
-          if (prices.length >= 4) open = prices[3];
-          if (prices.length >= 5) fluc1 = prices[4];
-          if (prices.length >= 6) fluc2 = prices[5];
-          
-          foundAnyOdds = prices.length > 0;
+      // Extract from second price div (PLACE)
+      if (priceDivs.length >= 2) {
+        const placeSpan = $(priceDivs[1]).find('button span[data-automation-id*="odds-button-text"]').first();
+        if (placeSpan.length > 0) {
+          const placeText = placeSpan.text().trim();
+          const placeMatch = placeText.match(/(\d+[.,]\d{1,2})/);
+          if (placeMatch) placeFixed = placeMatch[1].replace(',', '.');
+        }
+      }
+      
+      // Extract from third price div (EACH WAY)
+      if (priceDivs.length >= 3) {
+        const ewSpan = $(priceDivs[2]).find('button span[data-automation-id*="odds-button-text"]').first();
+        if (ewSpan.length > 0) {
+          const ewText = ewSpan.text().trim();
+          // Each way might show "EW" instead of odds, so handle that
+          const ewMatch = ewText.match(/(\d+[.,]\d{1,2})/);
+          if (ewMatch) eachWayFixed = ewMatch[1].replace(',', '.');
         }
       }
 
-      // Build horse object
+      // Build horse object (same output structure)
       const horseData = {
         rank,
         horseNumber,
@@ -457,17 +409,12 @@ export async function scrapeRaceCardByUrl(raceUrl) {
       horses.push(horseData);
 
       // Log to console for verification
-      console.log(`\n🐴 Rank ${rank} - Horse #${horseNumber}: ${horseName}`);
-      console.log(`   📊 Odds: Open=${open} | Fluc1=${fluc1} | Fluc2=${fluc2}`);
-      console.log(`   💰 Fixed: Win=${winFixed} | Place=${placeFixed} | Each Way=${eachWayFixed}`);
-      
-      // Debug: Check if odds are all 0.00 (potential extraction issue)
-      if (open === '0.00' && fluc1 === '0.00' && winFixed === '0.00') {
-        console.log(`   ⚠️  DEBUG: No odds found using standard extraction`);
-        console.log(`   ℹ️  HTML text sample: "${containerText.substring(0, 150)}..."`);
-      }
+      // console.log(`\n🐴 Rank ${rank} - Horse #${horseNumber}: ${horseName}`);
+      // console.log(`   📊 Odds: Open=${open} | Fluc1=${fluc1} | Fluc2=${fluc2}`);
+      // console.log(`   💰 Fixed: Win=${winFixed} | Place=${placeFixed} | Each Way=${eachWayFixed}`);
     });
-
+    // console.log(horses);
+    
     console.log(`\n✅ Successfully scraped ${horses.length} horses from race card\n`);
     return horses;
 

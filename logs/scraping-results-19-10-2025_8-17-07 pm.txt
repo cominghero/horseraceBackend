@@ -1,0 +1,690 @@
+HORSE RACING SCRAPING RESULTS LOG
+======================================================================
+Timestamp: 2025-10-19T12:17:07.373Z
+Total Racetracks: 7
+Total Races Scraped: 50
+======================================================================
+
+
+[1] RACETRACK: 
+----------------------------------------------------------------------
+Track URL: /horse-racing/australia-nz/moe/race-1-9737575
+Total Races: 7
+
+  R1. Result: 1,4,13 | Horses: 6
+     Link: /horse-racing/australia-nz/moe/race-1-9737575
+     Horses:
+       - [1] #1 Blaze Away (Place: 1.60)
+       - [2] #4 Hot Sea (Place: 1.04)
+       - [3] #8 Emanating (Place: 2.25)
+       - [4] #12 Sheeze Ominous (Place: 4.00)
+       - [5] #13 Zouie (Place: 11.00)
+       - [6] #14 Omnipresent (Place: 6.50)
+
+  R2. Result: 12,6,8 | Horses: 13
+     Link: /horse-racing/australia-nz/moe/race-2-9737572
+     Horses:
+       - [1] #1 Arabian Myth (Place: 2.80)
+       - [2] #3 Nicabuk (Place: 15.25)
+       - [3] #4 Not So Common (Place: 3.30)
+       - [4] #5 Presscode (Place: 1.30)
+       - [5] #6 Prince Of Brooky (Place: 2.05)
+       - [6] #7 Whatwashethinking (Place: 14.25)
+       - [7] #8 Black Eyed Blonde (Place: 1.67)
+       - [8] #9 Moonlight Romance (Place: 7.75)
+       - [9] #10 Ominous Lady (Place: 14.50)
+       - [10] #11 Reelness (Place: 6.00)
+       - [11] #12 Torvega (Place: 1.53)
+       - [12] #13 Written For Us (Place: 16.00)
+       - [13] #14 Danevirke (Place: 6.25)
+
+  R3. Result: 13,7,1 | Horses: 14
+     Link: /horse-racing/australia-nz/moe/race-3-9737574
+     Horses:
+       - [1] #1 Cuban Dawn (Place: 3.20)
+       - [2] #2 Mods (Place: 3.80)
+       - [3] #3 Money Wheel (Place: 2.80)
+       - [4] #4 Nikephoros (Place: 2.50)
+       - [5] #5 Redskin Jimmy (Place: 21.00)
+       - [6] #7 Tensile (Place: 2.40)
+       - [7] #8 Vidacii (Place: 31.00)
+       - [8] #9 Delta Moon (Place: 5.50)
+       - [9] #10 Discobay (Place: 6.00)
+       - [10] #11 I'm Mim (Place: 3.20)
+       - [11] #12 Montana Rose (Place: 13.00)
+       - [12] #13 Nile Crocodile (Place: 3.60)
+       - [13] #15 Lucky Diamond (Place: 2.80)
+       - [14] #16 Newcombe (Place: 1.55)
+
+  R4. Result: 5,1,8 | Horses: 12
+     Link: /horse-racing/australia-nz/moe/race-4-9737573
+     Horses:
+       - [1] #1 Bookman (Place: 3.10)
+       - [2] #2 Your Temptation (Place: 15.00)
+       - [3] #3 Ze Bee Nine (Place: 2.15)
+       - [4] #4 Cryptic Clue (Place: 1.90)
+       - [5] #5 Tight Grip (Place: 1.40)
+       - [6] #6 Mister Tom (Place: 9.50)
+       - [7] #7 Ripplebrook (Place: 7.00)
+       - [8] #8 Trinity's D'oro (Place: 3.00)
+       - [9] #9 Blaazay (Place: 5.50)
+       - [10] #10 Diamanda (Place: 2.35)
+       - [11] #12 Aussieaussieaussie (Place: 3.30)
+       - [12] #13 Box Vale (Place: 5.50)
+
+  R5. Result: 5,1,3 | Horses: 8
+     Link: /horse-racing/australia-nz/moe/race-5-9737569
+     Horses:
+       - [1] #1 Amawasha (Place: 2.45)
+       - [2] #2 Van Gerwen (Place: 1.35)
+       - [3] #3 Palace Winter (Place: 1.35)
+       - [4] #5 Women In Uniform (Place: 1.45)
+       - [5] #8 Shot At The Night (Place: 3.10)
+       - [6] #9 Miss Darkside (Place: 5.50)
+       - [7] #10 Norma's Fleet (Place: 4.00)
+       - [8] #11 Mrs Gossip (Place: 2.90)
+
+  R6. Result: 8,5,3 | Horses: 9
+     Link: /horse-racing/australia-nz/moe/race-6-9737570
+     Horses:
+       - [1] #1 Tori's Dee (Place: 1.75)
+       - [2] #2 Rebillyous (Place: 2.30)
+       - [3] #3 Shamrock Bay (Place: 1.20)
+       - [4] #4 Moonlight Rustler (Place: 3.40)
+       - [5] #5 Frenzy Lune (Place: 2.40)
+       - [6] #6 The Cruiser (Place: 3.40)
+       - [7] #7 First Tosen (Place: 6.50)
+       - [8] #8 Sleeping Tiger (Place: 1.90)
+       - [9] #10 Paradise Island (Place: 7.00)
+
+  R7. Result: 12,7,8 | Horses: 8
+     Link: /horse-racing/australia-nz/moe/race-7-9737571
+     Horses:
+       - [1] #1 Faberge Tzar (Place: 3.70)
+       - [2] #2 Social Conscience (Place: 2.40)
+       - [3] #4 Not Enough Effort (Place: 6.00)
+       - [4] #5 Si Si Milano (Place: 4.20)
+       - [5] #7 Maldini (Place: 1.10)
+       - [6] #8 Mont Saint Michel (Place: 1.85)
+       - [7] #10 Laugh With Me (Place: 3.10)
+       - [8] #12 Bedtime Angel (Place: 1.26)
+
+
+[2] RACETRACK: 
+----------------------------------------------------------------------
+Track URL: /horse-racing/australia-nz/horsham/race-1-9737556
+Total Races: 8
+
+  R1. Result: 11,12,9 | Horses: 11
+     Link: /horse-racing/australia-nz/horsham/race-1-9737556
+     Horses:
+       - [1] #1 A Little Reward (Place: 20.00)
+       - [2] #3 Ruled By Thieves (Place: 3.10)
+       - [3] #4 Sirleaf (Place: 3.20)
+       - [4] #5 Wee Jimmy (Place: 26.00)
+       - [5] #6 Gold Lilly (Place: 5.00)
+       - [6] #7 I'm Helro (Place: 1.18)
+       - [7] #9 Burleigh (Place: 2.80)
+       - [8] #10 Sweatband (Place: 11.00)
+       - [9] #11 Alzaro (Place: 1.60)
+       - [10] #12 Romantic Miss (Place: 1.30)
+       - [11] #13 Zoulette (Place: 12.00)
+
+  R2. Result: 9,12,13 | Horses: 12
+     Link: /horse-racing/australia-nz/horsham/race-2-9737558
+     Horses:
+       - [1] #2 Malawi Man (Place: 3.40)
+       - [2] #3 Satellite (Place: 6.50)
+       - [3] #4 Best Fit (Place: 31.00)
+       - [4] #5 Favourite Girl (Place: 31.00)
+       - [5] #6 French Love (Place: 8.00)
+       - [6] #7 Heart's Embrace (Place: 1.60)
+       - [7] #9 Pinkerton (Place: 1.55)
+       - [8] #10 Saraya (Place: 3.00)
+       - [9] #12 Boncapo (Place: 1.75)
+       - [10] #13 Durham (Place: 1.30)
+       - [11] #15 Steelology (Place: 15.00)
+       - [12] #16 Hughie's Spirit (Place: 21.00)
+
+  R3. Result: 9,3,5 | Horses: 9
+     Link: /horse-racing/australia-nz/horsham/race-3-9737559
+     Horses:
+       - [1] #1 Conjurer (Place: 19.75)
+       - [2] #2 Rhinestone Rory (Place: 3.60)
+       - [3] #3 True Test (Place: 1.91)
+       - [4] #4 Wet 'N' Dry (Place: 3.20)
+       - [5] #5 Gee And Tee (Place: 1.20)
+       - [6] #6 High Heeled (Place: 5.25)
+       - [7] #7 May Queen (Place: 2.40)
+       - [8] #8 Streamelot (Place: 2.38)
+       - [9] #9 Bagpipes (Place: 1.40)
+
+  R4. Result: 4,1,3 | Horses: 6
+     Link: /horse-racing/australia-nz/horsham/race-4-9737554
+     Horses:
+       - [1] #1 Naralinga (Place: 2.25)
+       - [2] #3 Captain Joolian (Place: 2.90)
+       - [3] #4 Thunder Park (Place: 1.65)
+       - [4] #5 Zamora (Place: 1.95)
+       - [5] #6 Shout Me (Place: 3.70)
+       - [6] #9 Briseis Eclipse (Place: 2.70)
+
+  R5. Result: 5,7,2 | Horses: 8
+     Link: /horse-racing/australia-nz/horsham/race-5-9737561
+     Horses:
+       - [1] #1 Ten Commandments (Place: 2.90)
+       - [2] #2 Tarpaulin (Place: 1.14)
+       - [3] #3 Bine (Place: 1.45)
+       - [4] #4 Edges Diamond (Place: 1.60)
+       - [5] #5 Comic Hero (Place: 2.10)
+       - [6] #6 The Wizard King (Place: 2.30)
+       - [7] #7 Flux (Place: 5.00)
+       - [8] #8 Darra Linen (Place: 11.00)
+
+  R6. Result: 1,5,2 | Horses: 11
+     Link: /horse-racing/australia-nz/horsham/race-6-9737555
+     Horses:
+       - [1] #1 Belthil (Place: 2.45)
+       - [2] #2 Corona Lad (Place: 4.40)
+       - [3] #4 Flying Fizz (Place: 1.55)
+       - [4] #5 I Catchem Fox (Place: 2.35)
+       - [5] #6 Powerbound (Place: 3.60)
+       - [6] #7 Thunder Point (Place: 6.50)
+       - [7] #8 Ballon D'or (Place: 3.60)
+       - [8] #10 Alcoshare (Place: 4.20)
+       - [9] #11 Gunado (Place: 3.90)
+       - [10] #12 Guerite (Place: 1.80)
+       - [11] #13 Lexton (Place: 5.00)
+
+  R7. Result: 8,9,7 | Horses: 8
+     Link: /horse-racing/australia-nz/horsham/race-7-9737560
+     Horses:
+       - [1] #1 Goldman (Place: 7.50)
+       - [2] #2 Diwali (Place: 2.15)
+       - [3] #3 I Am The Empire (Place: 1.75)
+       - [4] #5 Any Luck (Place: 3.10)
+       - [5] #6 Rich Champagne (Place: 1.75)
+       - [6] #7 Commander Harry (Place: 2.10)
+       - [7] #8 Pittsburgh Pirate (Place: 2.30)
+       - [8] #9 Tikemyson (Place: 1.40)
+
+  R8. Result: 3,2,4 | Horses: 9
+     Link: /horse-racing/australia-nz/horsham/race-8-9737557
+     Horses:
+       - [1] #1 Wise Legend (Place: 3.40)
+       - [2] #2 Chairman (Place: 1.70)
+       - [3] #3 Budjik Boy (Place: 1.70)
+       - [4] #4 Digari (Place: 2.50)
+       - [5] #6 Blazing Guru (Place: 5.00)
+       - [6] #7 Mr George (Place: 4.00)
+       - [7] #8 Ripper (Place: 4.40)
+       - [8] #10 Ongatiti (Place: 1.40)
+       - [9] #11 Surely Special (Place: 2.50)
+
+
+[3] RACETRACK: 
+----------------------------------------------------------------------
+Track URL: /horse-racing/australia-nz/nowra/race-1-9737313
+Total Races: 7
+
+  R1. Result: 6,1,7 | Horses: 7
+     Link: /horse-racing/australia-nz/nowra/race-1-9737313
+     Horses:
+       - [1] #1 Complaisance (Place: 1.90)
+       - [2] #2 Nagadec (Place: 3.50)
+       - [3] #4 Lombardi Lass (Place: 7.50)
+       - [4] #6 Cando Attitude (Place: 1.24)
+       - [5] #7 Commandoro (Place: 2.70)
+       - [6] #8 Hell Of A Show (Place: 4.60)
+       - [7] #9 Trianon (Place: 4.40)
+
+  R2. Result: 9,8,1 | Horses: 7
+     Link: /horse-racing/australia-nz/nowra/race-2-9737315
+     Horses:
+       - [1] #1 Star Legacy (Place: 1.90)
+       - [2] #2 Heromania (Place: 3.60)
+       - [3] #3 Beauer (Place: 1.45)
+       - [4] #4 Sir Sublime (Place: 2.05)
+       - [5] #6 Ellenmac (Place: 5.50)
+       - [6] #8 Obviously Albert (Place: 4.40)
+       - [7] #9 Ever Was (Place: 6.50)
+
+  R3. Result: 6,11,12 | Horses: 9
+     Link: /horse-racing/australia-nz/nowra/race-3-9737314
+     Horses:
+       - [1] #2 Revoke (Place: 6.50)
+       - [2] #3 Run Raymond Run (Place: 1.85)
+       - [3] #4 Vivek (Place: 14.00)
+       - [4] #5 Casino Shaw (Place: 4.00)
+       - [5] #6 Cosmic Attraction (Place: 1.60)
+       - [6] #7 Final Draft (Place: 10.00)
+       - [7] #8 Goddess Minerva (Place: 4.80)
+       - [8] #11 Neeson (Place: 1.10)
+       - [9] #12 Treasure Hunter (Place: 1.14)
+
+  R4. Result: 7,1,9 | Horses: 9
+     Link: /horse-racing/australia-nz/nowra/race-4-9737317
+     Horses:
+       - [1] #1 Attestor (Place: 2.90)
+       - [2] #2 Dancing Man (Place: 2.10)
+       - [3] #3 Donnini (Place: 18.00)
+       - [4] #4 Expeditiously (Place: 18.00)
+       - [5] #5 Rawano (Place: 21.00)
+       - [6] #7 The Eyes Have It (Place: 1.75)
+       - [7] #9 Cool Rupert (Place: 1.12)
+       - [8] #10 Alnair (Place: 1.55)
+       - [9] #11 Mozzoni (Place: 1.70)
+
+  R5. Result: 6,4,8 | Horses: 6
+     Link: /horse-racing/australia-nz/nowra/race-5-9737316
+     Horses:
+       - [1] #3 Son Of Eureka (Place: 1.65)
+       - [2] #4 Flashy Icon (Place: 3.20)
+       - [3] #6 You're On Mute (Place: 3.90)
+       - [4] #8 Airliner (Place: 1.80)
+       - [5] #10 Sebastian's Flyer (Place: 1.80)
+       - [6] #11 Tigertude (Place: 5.00)
+
+  R6. Result: 10,7,13 | Horses: 12
+     Link: /horse-racing/australia-nz/nowra/race-6-9737318
+     Horses:
+       - [1] #2 Flying Impala (Place: 2.80)
+       - [2] #3 Kennedy Choice (Place: 5.00)
+       - [3] #4 Gorush Lightning (Place: 8.00)
+       - [4] #6 Artiebett (Place: 8.00)
+       - [5] #7 Fun Sponge (Place: 4.20)
+       - [6] #8 Miss Stalwart (Place: 3.40)
+       - [7] #9 All Too Lucky (Place: 2.40)
+       - [8] #10 Can't Touch This (Place: 1.45)
+       - [9] #11 Ulysses Blue (Place: 2.25)
+       - [10] #12 Vereeva (Place: 3.40)
+       - [11] #13 Sure Intentions (Place: 2.15)
+       - [12] #14 Selhurst Park (Place: 8.00)
+
+  R7. Result: 5,1,12 | Horses: 9
+     Link: /horse-racing/australia-nz/nowra/race-7-9737319
+     Horses:
+       - [1] #1 Maccbi (Place: 1.22)
+       - [2] #5 La Nina (Place: 1.85)
+       - [3] #6 Unnatural Power (Place: 4.60)
+       - [4] #7 Alabama Hussy (Place: 1.90)
+       - [5] #9 Unjust (Place: 8.00)
+       - [6] #11 Deep Affection (Place: 3.10)
+       - [7] #12 Mamma Mia (Place: 1.75)
+       - [8] #14 Sachi (Place: 2.05)
+       - [9] #15 Yesglenn (Place: 7.00)
+
+
+[4] RACETRACK: 
+----------------------------------------------------------------------
+Track URL: /horse-racing/australia-nz/sunshine-coast/race-1-9737619
+Total Races: 7
+
+  R1. Result: 2,3,1 | Horses: 3
+     Link: /horse-racing/australia-nz/sunshine-coast/race-1-9737619
+     Horses:
+       - [1] #1 Bel Tiro (Place: 0.00)
+       - [2] #2 Boomelli (Place: 0.00)
+       - [3] #3 Cosmopolitan Lady (Place: 0.00)
+
+  R2. Result: 8,4,7 | Horses: 7
+     Link: /horse-racing/australia-nz/sunshine-coast/race-2-9737621
+     Horses:
+       - [1] #1 The Sun Dance (Place: 1.73)
+       - [2] #2 A Touch From Fayt (Place: 3.60)
+       - [3] #4 Oohlalouvre (Place: 1.75)
+       - [4] #5 Qickwit (Place: 10.75)
+       - [5] #7 Blitzwater (Place: 2.15)
+       - [6] #8 Champagne Lane (Place: 1.91)
+       - [7] #9 Irish Thunder (Place: 23.50)
+
+  R3. Result: 10,7,2 | Horses: 10
+     Link: /horse-racing/australia-nz/sunshine-coast/race-3-9737616
+     Horses:
+       - [1] #1 Doing It (Place: 7.25)
+       - [2] #2 Watchya Language (Place: 3.60)
+       - [3] #3 Cavascot (Place: 2.80)
+       - [4] #4 Zoublime (Place: 3.60)
+       - [5] #5 Bold Beauty (Place: 2.20)
+       - [6] #6 Lilly Grace (Place: 6.75)
+       - [7] #7 Taga Smile (Place: 1.50)
+       - [8] #8 Making Eyes (Place: 2.63)
+       - [9] #9 Cairo Queen (Place: 2.63)
+       - [10] #10 Roxset (Place: 1.33)
+
+  R4. Result: 12,4,7 | Horses: 11
+     Link: /horse-racing/australia-nz/sunshine-coast/race-4-9737617
+     Horses:
+       - [1] #1 King Mal (Place: 3.20)
+       - [2] #2 Parat Sibifortunam (Place: 1.75)
+       - [3] #4 Elrond (Place: 1.65)
+       - [4] #6 Claw Machine (Place: 2.30)
+       - [5] #7 Praise You (Place: 1.60)
+       - [6] #8 Too Darn Smart (Place: 15.00)
+       - [7] #12 Ormond Road (Place: 2.70)
+       - [8] #13 Ship Happens (Place: 2.70)
+       - [9] #14 Fergus En Marche (Place: 26.00)
+       - [10] #15 Rubos (Place: 12.00)
+       - [11] #16 Twilight Steps (Place: 3.90)
+
+  R5. Result: 11,8,4 | Horses: 8
+     Link: /horse-racing/australia-nz/sunshine-coast/race-5-9737620
+     Horses:
+       - [1] #2 Silver City (Place: 3.40)
+       - [2] #3 National Interest (Place: 1.45)
+       - [3] #4 Badda Boom Baby (Place: 3.40)
+       - [4] #5 Bolshevic Road (Place: 2.90)
+       - [5] #8 Brooklyn Daisy (Place: 2.35)
+       - [6] #9 Gagnante Enchere (Place: 1.90)
+       - [7] #10 Hard To Dismiss (Place: 3.70)
+       - [8] #11 Hurricane Lu (Place: 1.20)
+
+  R6. Result: 7,1,2 | Horses: 8
+     Link: /horse-racing/australia-nz/sunshine-coast/race-6-9737618
+     Horses:
+       - [1] #1 Flywheel (Place: 1.50)
+       - [2] #2 Italian Riviera (Place: 1.60)
+       - [3] #3 Daytona (Place: 2.60)
+       - [4] #4 Yoshino (Place: 3.20)
+       - [5] #7 Capital Asset (Place: 2.30)
+       - [6] #8 Midnight Drifter (Place: 3.10)
+       - [7] #11 Chinchilla Ahead (Place: 1.70)
+       - [8] #13 Nightstick (Place: 2.80)
+
+  R7. Result: 7,5,9 | Horses: 10
+     Link: /horse-racing/australia-nz/sunshine-coast/race-7-9737622
+     Horses:
+       - [1] #2 Casterly Rock (Place: 2.80)
+       - [2] #3 Rugby (Place: 1.50)
+       - [3] #4 Cool Running (Place: 1.70)
+       - [4] #5 Jenni Moreese (Place: 1.50)
+       - [5] #6 Bertus (Place: 4.60)
+       - [6] #7 Ole Bazzle (Place: 5.50)
+       - [7] #8 Desert Legend (Place: 3.80)
+       - [8] #9 Fitzroy Street (Place: 2.80)
+       - [9] #14 Blinding Speed (Place: 2.80)
+       - [10] #15 You Think So (Place: 15.00)
+
+
+[5] RACETRACK: 
+----------------------------------------------------------------------
+Track URL: /horse-racing/australia-nz/halidon/race-1-9737348
+Total Races: 7
+
+  R1. Result: 5,6,7 | Horses: 8
+     Link: /horse-racing/australia-nz/halidon/race-1-9737348
+     Horses:
+       - [1] #1 Mckenzie (Place: 5.00)
+       - [2] #3 Esticon (Place: 3.10)
+       - [3] #4 Lady Vanhusen (Place: 1.80)
+       - [4] #5 Mrs Penny Cracker (Place: 1.07)
+       - [5] #6 Oldpop (Place: 1.55)
+       - [6] #7 Prince Lucifer (Place: 1.22)
+       - [7] #8 Regal Time (Place: 5.00)
+       - [8] #9 Tiny Bay (Place: 14.00)
+
+  R2. Result: 2,3,5 | Horses: 10
+     Link: /horse-racing/australia-nz/halidon/race-2-9737344
+     Horses:
+       - [1] #1 Babyface Is Wright (Place: 12.00)
+       - [2] #2 Bending Away (Place: 3.00)
+       - [3] #3 Brimarvi Rosemarie (Place: 1.45)
+       - [4] #4 Clear Spirit (Place: 9.50)
+       - [5] #5 Imperiosa (Place: 2.05)
+       - [6] #6 Petite Puissance (Place: 11.00)
+       - [7] #7 Queen Calanthe (Place: 3.70)
+       - [8] #8 Blabber Mouth (Place: 2.70)
+       - [9] #9 Global Outcast (Place: 1.95)
+       - [10] #10 Maldivica (Place: 1.14)
+
+  R3. Result: 4,6,2 | Horses: 10
+     Link: /horse-racing/australia-nz/halidon/race-3-9737346
+     Horses:
+       - [1] #1 Hedged Your Bets (Place: 8.50)
+       - [2] #2 Little Rocket (Place: 1.35)
+       - [3] #4 Mateo (Place: 3.00)
+       - [4] #5 Melodia Legend (Place: 1.50)
+       - [5] #6 On Tik (Place: 2.90)
+       - [6] #7 Ourbolt (Place: 5.50)
+       - [7] #9 Thavma (Place: 1.75)
+       - [8] #10 Wrath (Place: 6.00)
+       - [9] #11 Benign (Place: 3.30)
+       - [10] #12 Cangrande (Place: 2.90)
+
+  R4. Result: 9,8,7 | Horses: 8
+     Link: /horse-racing/australia-nz/halidon/race-4-9737349
+     Horses:
+       - [1] #1 Deploy And Destroy (Place: 1.91)
+       - [2] #3 Immortal Spirit (Place: 1.30)
+       - [3] #4 Swissta (Place: 3.60)
+       - [4] #6 Kristobel (Place: 1.50)
+       - [5] #7 Archdeacon (Place: 3.60)
+       - [6] #8 Mr Ferrari (Place: 1.67)
+       - [7] #9 Ocean Blast (Place: 3.00)
+       - [8] #10 Miss Artfire (Place: 5.50)
+
+  R5. Result: 1,2,5 | Horses: 9
+     Link: /horse-racing/australia-nz/halidon/race-5-9737345
+     Horses:
+       - [1] #1 Think Tank (Place: 1.85)
+       - [2] #2 Easy Beast (Place: 1.70)
+       - [3] #3 Amber Nook (Place: 2.70)
+       - [4] #4 Everythingisautumn (Place: 1.80)
+       - [5] #5 Hit The Slopes (Place: 4.00)
+       - [6] #6 Fantastic Host (Place: 1.70)
+       - [7] #7 Greatestofease (Place: 3.10)
+       - [8] #8 Gogolf Guru (Place: 3.20)
+       - [9] #9 American Trouble (Place: 5.50)
+
+  R6. Result: 6,2,8 | Horses: 11
+     Link: /horse-racing/australia-nz/halidon/race-6-9737350
+     Horses:
+       - [1] #2 Super Lad (Place: 1.50)
+       - [2] #3 Figo The Great (Place: 8.50)
+       - [3] #4 Grinzinger Bishop (Place: 4.40)
+       - [4] #5 Thermodynamic (Place: 2.00)
+       - [5] #6 Bit Of A Rebel (Place: 1.80)
+       - [6] #7 Shakespeare (Place: 2.70)
+       - [7] #8 Alchian (Place: 4.00)
+       - [8] #9 Back Me Up Benny (Place: 2.45)
+       - [9] #10 Boom Bang (Place: 3.10)
+       - [10] #12 Ruada (Place: 4.40)
+       - [11] #13 Cowley's Creek (Place: 19.00)
+
+  R7. Result: 13,3,4 | Horses: 11
+     Link: /horse-racing/australia-nz/halidon/race-7-9737347
+     Horses:
+       - [1] #1 Pompeii Empire (Place: 5.50)
+       - [2] #2 Come Along Jeffrey (Place: 3.70)
+       - [3] #3 Ice Symphony (Place: 1.75)
+       - [4] #4 Lastar (Place: 3.00)
+       - [5] #5 Lovin' Laughs (Place: 1.70)
+       - [6] #6 Outpost (Place: 2.50)
+       - [7] #7 Hot Off (Place: 1.90)
+       - [8] #10 Testa Dexta (Place: 3.00)
+       - [9] #11 Real Valentia (Place: 3.20)
+       - [10] #12 Limbering (Place: 5.50)
+       - [11] #13 Charlesfort (Place: 6.50)
+
+
+[6] RACETRACK: 
+----------------------------------------------------------------------
+Track URL: /horse-racing/australia-nz/lismore/race-1-9737285
+Total Races: 7
+
+  R1. Result: 3,1,7 | Horses: 6
+     Link: /horse-racing/australia-nz/lismore/race-1-9737285
+     Horses:
+       - [1] #1 Kalkanli (Place: 1.30)
+       - [2] #2 Son Of A Boom (Place: 19.75)
+       - [3] #3 Tortilla (Place: 3.10)
+       - [4] #4 Woodland Wonder (Place: 9.50)
+       - [5] #6 Bianco Nero (Place: 3.30)
+       - [6] #7 Kayleen's Profit (Place: 1.17)
+
+  R2. Result: 2,6,8 | Horses: 8
+     Link: /horse-racing/australia-nz/lismore/race-2-9737284
+     Horses:
+       - [1] #2 Icewater (Place: 1.50)
+       - [2] #3 Reel Torque (Place: 1.95)
+       - [3] #4 Rephrase (Place: 4.80)
+       - [4] #5 Tara Koda (Place: 1.70)
+       - [5] #6 Prestige Ice (Place: 1.40)
+       - [6] #7 Ourlegseleven (Place: 3.30)
+       - [7] #8 Gaming (Place: 2.10)
+       - [8] #9 Son Of Heroic (Place: 5.50)
+
+  R3. Result: 6,11,4 | Horses: 8
+     Link: /horse-racing/australia-nz/lismore/race-3-9737288
+     Horses:
+       - [1] #2 Forever Fortune (Place: 1.80)
+       - [2] #4 Traveller (Place: 3.20)
+       - [3] #6 Gold Puma (Place: 1.30)
+       - [4] #7 Hannah's Astar (Place: 17.00)
+       - [5] #8 Releasethewolves (Place: 2.50)
+       - [6] #9 Spiritual Rhythm (Place: 2.35)
+       - [7] #10 Casual Cat (Place: 3.60)
+       - [8] #11 Sinatra (Place: 1.14)
+
+  R4. Result: 11,1,6 | Horses: 8
+     Link: /horse-racing/australia-nz/lismore/race-4-9737287
+     Horses:
+       - [1] #1 Insta Worthy (Place: 1.05)
+       - [2] #2 Miss Midas Touch (Place: 1.73)
+       - [3] #3 Sugar Road (Place: 3.75)
+       - [4] #5 Beearetee (Place: 3.00)
+       - [5] #6 Copenhagen Cat (Place: 1.80)
+       - [6] #7 Highwire Girl (Place: 2.80)
+       - [7] #9 Righteous Brother (Place: 3.75)
+       - [8] #11 Whiskey Miss (Place: 2.60)
+
+  R5. Result: 1,2,9 | Horses: 8
+     Link: /horse-racing/australia-nz/lismore/race-5-9737286
+     Horses:
+       - [1] #1 Snow Falcon (Place: 2.20)
+       - [2] #2 Eagle's Fire (Place: 1.65)
+       - [3] #3 Secret Statement (Place: 4.20)
+       - [4] #5 Cardsharp (Place: 1.50)
+       - [5] #6 Luvtoknow (Place: 2.80)
+       - [6] #8 Siglo De Oro (Place: 1.90)
+       - [7] #9 Barron (Place: 2.05)
+       - [8] #10 She's Enuff (Place: 3.10)
+
+  R6. Result: 2,4,6 | Horses: 12
+     Link: /horse-racing/australia-nz/lismore/race-6-9737289
+     Horses:
+       - [1] #1 Iobject (Place: 3.20)
+       - [2] #2 Nails And Pride (Place: 2.20)
+       - [3] #4 All About Artie (Place: 1.33)
+       - [4] #5 West Cork (Place: 1.91)
+       - [5] #6 Private Tender (Place: 2.75)
+       - [6] #7 Bush Warrior (Place: 6.25)
+       - [7] #8 Taking The Mikki (Place: 3.60)
+       - [8] #9 Aureate (Place: 4.20)
+       - [9] #10 Old Timing Man (Place: 5.75)
+       - [10] #11 Ferry Road (Place: 5.50)
+       - [11] #12 Doyle (Place: 2.38)
+       - [12] #13 Harcasion (Place: 24.50)
+
+  R7. Result: 10,5,8 | Horses: 9
+     Link: /horse-racing/australia-nz/lismore/race-7-9737290
+     Horses:
+       - [1] #1 Never Island (Place: 3.00)
+       - [2] #2 Without A Doubt (Place: 3.10)
+       - [3] #4 Miss Zermatt (Place: 2.10)
+       - [4] #5 Deep Stealth (Place: 1.12)
+       - [5] #8 Vetoed (Place: 1.65)
+       - [6] #10 Lady Alabama (Place: 2.45)
+       - [7] #12 Star Seeker (Place: 10.00)
+       - [8] #13 Monte Tiana (Place: 3.50)
+       - [9] #14 Cafe Mocha (Place: 4.60)
+
+
+[7] RACETRACK: 
+----------------------------------------------------------------------
+Track URL: /horse-racing/australia-nz/kalgoorlie/race-1-9737602
+Total Races: 7
+
+  R1. Result: 1,5,7 | Horses: 7
+     Link: /horse-racing/australia-nz/kalgoorlie/race-1-9737602
+     Horses:
+       - [1] #1 Lavish Charm (Place: 1.05)
+       - [2] #2 Pirate's Alley (Place: 17.75)
+       - [3] #3 Thatsthewayilikeit (Place: 2.40)
+       - [4] #4 Safe Rappa (Place: 7.25)
+       - [5] #5 Blitzem Babe (Place: 3.20)
+       - [6] #6 Call Time (Place: 4.75)
+       - [7] #7 Margot's Bullseye (Place: 2.63)
+
+  R2. Result: 2,4,3 | Horses: 7
+     Link: /horse-racing/australia-nz/kalgoorlie/race-2-9737599
+     Horses:
+       - [1] #1 Pearly Nuggett (Place: 1.95)
+       - [2] #2 Zing To Win (Place: 1.60)
+       - [3] #3 Sure Thing (Place: 1.55)
+       - [4] #4 Treasured Queen (Place: 2.80)
+       - [5] #5 Baalbek (Place: 3.90)
+       - [6] #6 Scottish Laird (Place: 14.00)
+       - [7] #7 Paddy's Flyin' (Place: 6.50)
+
+  R3. Result: 3,4,2 | Horses: 7
+     Link: /horse-racing/australia-nz/kalgoorlie/race-3-9737603
+     Horses:
+       - [1] #1 Vevinsky (Place: 10.00)
+       - [2] #2 Please Mizter (Place: 1.60)
+       - [3] #3 Just Famous (Place: 1.09)
+       - [4] #4 Dublin Red (Place: 4.40)
+       - [5] #5 Kakadu (Place: 9.00)
+       - [6] #6 Sunshine Tafe (Place: 2.40)
+       - [7] #7 Cocoon Bay (Place: 4.40)
+
+  R4. Result: 9,4,2 | Horses: 9
+     Link: /horse-racing/australia-nz/kalgoorlie/race-4-9737600
+     Horses:
+       - [1] #1 Prince Of Bondi (Place: 1.60)
+       - [2] #2 My Kryptonite (Place: 2.90)
+       - [3] #3 Whiskers Harbour (Place: 1.40)
+       - [4] #4 Vain Universe (Place: 2.20)
+       - [5] #5 Revolving (Place: 4.20)
+       - [6] #6 Amira Girl (Place: 6.00)
+       - [7] #7 Luminous Lady (Place: 3.20)
+       - [8] #8 Bring Me A Frothy (Place: 3.60)
+       - [9] #9 Slippery Fish (Place: 1.80)
+
+  R5. Result: 4,3,7 | Horses: 8
+     Link: /horse-racing/australia-nz/kalgoorlie/race-5-9737601
+     Horses:
+       - [1] #1 Science Degree (Place: 1.55)
+       - [2] #2 Eevalina (Place: 2.80)
+       - [3] #3 Twist Of Gold (Place: 1.30)
+       - [4] #4 Dreamers Never Die (Place: 1.18)
+       - [5] #5 The Lions' Gate (Place: 4.80)
+       - [6] #6 Kelly's Li Za Lu (Place: 5.50)
+       - [7] #7 Penned (Place: 2.50)
+       - [8] #8 Sabino (Place: 3.40)
+
+  R6. Result: 4,2,5 | Horses: 8
+     Link: /horse-racing/australia-nz/kalgoorlie/race-6-9737605
+     Horses:
+       - [1] #1 Just Sublime (Place: 1.22)
+       - [2] #2 Whatyoutalkinbout (Place: 1.22)
+       - [3] #3 Bedouin Villa (Place: 11.00)
+       - [4] #4 Everlasting Spirit (Place: 3.30)
+       - [5] #5 Chipilly (Place: 1.50)
+       - [6] #6 Elsueno (Place: 2.80)
+       - [7] #7 Mistress Of Excess (Place: 3.60)
+       - [8] #8 Fiendish (Place: 3.10)
+
+  R7. Result: 2,8,5 | Horses: 9
+     Link: /horse-racing/australia-nz/kalgoorlie/race-7-9737604
+     Horses:
+       - [1] #1 Jayashree (Place: 1.18)
+       - [2] #2 Monty Zoomer (Place: 1.65)
+       - [3] #3 I Never Dreamed (Place: 2.70)
+       - [4] #4 American Thighs (Place: 3.20)
+       - [5] #5 Mystical Wisdom (Place: 3.40)
+       - [6] #6 Absolute Plum (Place: 2.00)
+       - [7] #7 Royale Muck Up (Place: 5.00)
+       - [8] #8 Ruling Dame (Place: 4.60)
+       - [9] #9 Moriah (Place: 2.60)
+

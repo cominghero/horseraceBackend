@@ -1,0 +1,125 @@
+COMPLETED RACES LOG
+================================================================================
+Timestamp: 2025-10-19T05:12:38.819Z
+Total Racetracks: 6
+================================================================================
+
+Total Races: 25
+
+
+[1] RACETRACK: 
+--------------------------------------------------------------------------------
+Country: Australia
+Track URL: /horse-racing/australia-nz/moe
+Total Races: 4
+
+  R1. Result: 1,4,13
+     Link: /horse-racing/australia-nz/moe/race-1-9737575
+
+  R2. Result: 12,6,8
+     Link: /horse-racing/australia-nz/moe/race-2-9737572
+
+  R3. Result: 13,7,1
+     Link: /horse-racing/australia-nz/moe/race-3-9737574
+
+  R4. Result: 5,1,8
+     Link: /horse-racing/australia-nz/moe/race-4-9737573
+
+
+[2] RACETRACK: 
+--------------------------------------------------------------------------------
+Country: Australia
+Track URL: /horse-racing/australia-nz/horsham
+Total Races: 5
+
+  R1. Result: 11,12,9
+     Link: /horse-racing/australia-nz/horsham/race-1-9737556
+
+  R2. Result: 9,12,13
+     Link: /horse-racing/australia-nz/horsham/race-2-9737558
+
+  R3. Result: 9,3,5
+     Link: /horse-racing/australia-nz/horsham/race-3-9737559
+
+  R4. Result: 4,1,3
+     Link: /horse-racing/australia-nz/horsham/race-4-9737554
+
+  R5. Result: 5,7,2
+     Link: /horse-racing/australia-nz/horsham/race-5-9737561
+
+
+[3] RACETRACK: 
+--------------------------------------------------------------------------------
+Country: Australia
+Track URL: /horse-racing/australia-nz/nowra
+Total Races: 4
+
+  R1. Result: 6,1,7
+     Link: /horse-racing/australia-nz/nowra/race-1-9737313
+
+  R2. Result: 9,8,1
+     Link: /horse-racing/australia-nz/nowra/race-2-9737315
+
+  R3. Result: 6,11,12
+     Link: /horse-racing/australia-nz/nowra/race-3-9737314
+
+  R4. Result: 7,1,9
+     Link: /horse-racing/australia-nz/nowra/race-4-9737317
+
+
+[4] RACETRACK: 
+--------------------------------------------------------------------------------
+Country: Australia
+Track URL: /horse-racing/australia-nz/lismore
+Total Races: 4
+
+  R1. Result: 3,1,7
+     Link: /horse-racing/australia-nz/lismore/race-1-9737285
+
+  R2. Result: 2,6,8
+     Link: /horse-racing/australia-nz/lismore/race-2-9737284
+
+  R3. Result: 6,11,4
+     Link: /horse-racing/australia-nz/lismore/race-3-9737288
+
+  R4. Result: 11,1,6
+     Link: /horse-racing/australia-nz/lismore/race-4-9737287
+
+
+[5] RACETRACK: 
+--------------------------------------------------------------------------------
+Country: Australia
+Track URL: /horse-racing/australia-nz/sunshine-coast
+Total Races: 4
+
+  R1. Result: 2,3,1
+     Link: /horse-racing/australia-nz/sunshine-coast/race-1-9737619
+
+  R2. Result: 8,4,7
+     Link: /horse-racing/australia-nz/sunshine-coast/race-2-9737621
+
+  R3. Result: 10,7,2
+     Link: /horse-racing/australia-nz/sunshine-coast/race-3-9737616
+
+  R4. Result: 12,4,7
+     Link: /horse-racing/australia-nz/sunshine-coast/race-4-9737617
+
+
+[6] RACETRACK: 
+--------------------------------------------------------------------------------
+Country: Australia
+Track URL: /horse-racing/australia-nz/halidon
+Total Races: 4
+
+  R1. Result: 5,6,7
+     Link: /horse-racing/australia-nz/halidon/race-1-9737348
+
+  R2. Result: 2,3,5
+     Link: /horse-racing/australia-nz/halidon/race-2-9737344
+
+  R3. Result: 4,6,2
+     Link: /horse-racing/australia-nz/halidon/race-3-9737346
+
+  R4. Result: 9,8,7
+     Link: /horse-racing/australia-nz/halidon/race-4-9737349
+
