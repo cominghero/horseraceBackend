@@ -171,13 +171,14 @@ export async function scrapeCompletedRaces() {
       }
 
       // Get the track name
-      const trackNameElement = firstTd.find('a > div > div > div');
-      let trackName = '';
-      trackNameElement.contents().each((i, node) => {
-        if (node.type === 'text') {
-          trackName = $(node).text().trim();
-        }
-      });
+      const trackName = firstTd.find('a > div > div > span').text().trim();
+      // let trackName = '';
+
+      // trackNameElement.contents().each((i, node) => {
+      //   if (node.type === 'text') {
+      //     trackName = $(node).text().trim();
+      //   }
+      // });
 
       // Get the track link
       const trackLink = firstTd.find('a').attr('href');
@@ -425,17 +426,88 @@ export async function scrapeRaceCardByUrl(raceUrl) {
 }
 
 /**
+ * Extract race date/time from the results header
+ * Looks for: <div data-automation-id="results-header">...<span>19 Oct 10:47</span></div>
+ * @param {string} raceUrl - The race URL to fetch
+ * @returns {Promise<string>} Race date (e.g., "19 Oct 10:47") or null if not found
+ */
+export async function extractRaceDateFromUrl(raceUrl) {
+  try {
+    // Convert relative URL to full URL if needed
+    const fullUrl = raceUrl.startsWith('http') 
+      ? raceUrl 
+      : `https://www.sportsbet.com.au${raceUrl}`;
+    
+    const response = await axios.get(fullUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      }
+    });
+
+    const $ = cheerio.load(response.data);
+    
+    // Find the header with data-automation-id="results-header"
+    const headerDiv = $('div[data-automation-id="results-header"]');
+    
+    if (headerDiv.length === 0) {
+      console.warn('⚠️ Header not found');
+      return null;
+    }
+    
+    // Get all direct child divs (class names are dynamically generated, so match by position)
+    const headerCells = headerDiv.find('> div');
+    
+    if (headerCells.length < 2) {
+      console.warn('⚠️ Date cell not found (found', headerCells.length, 'cells)');
+      return null;
+    }
+    
+    // Get the second headerCell's span text (index 1 = second div)
+    const dateText = $(headerCells[1]).find('span').text().trim();
+    
+    return dateText || null;
+  } catch (error) {
+    console.error('❌ Error extracting race date:', error.message);
+    return null;
+  }
+}
+
+/**
+ * Extract time from race date-time string
+ * Converts "19 Oct 3:43" to "3:43" or "19 Oct 10:47" to "10:47"
+ * @param {string} dateTimeStr - The date-time string from results header
+ * @returns {string} Time in HH:MM format, or 'N/A' if extraction fails
+ */
+function extractTimeFromDateTime(dateTimeStr) {
+  if (!dateTimeStr) return 'N/A';
+  
+  try {
+    // Match pattern like "3:43" or "10:47" (time at the end)
+    const timeMatch = dateTimeStr.match(/(\d{1,2}):(\d{2})\s*(am|pm)?$/i);
+    if (timeMatch) {
+      return `${timeMatch[1]}:${timeMatch[2]}`;
+    }
+    return 'N/A';
+  } catch (error) {
+    console.warn(`⚠️ Error extracting time from "${dateTimeStr}": ${error.message}`);
+    return 'N/A';
+  }
+}
+
+/**
  * Format race card results for JSON output
  * @param {Array} horses - Array of horse data
  * @param {string} raceUrl - The race URL
+ * @param {string} raceDate - The race date/time (e.g., "19 Oct 10:47")
  * @returns {object}
  */
-export function formatRaceCardAsJSON(horses, raceUrl) {
+export function formatRaceCardAsJSON(horses, raceUrl, raceDate = null) {
   return {
     timestamp: new Date().toISOString(),
     source: 'Sportsbet Australia',
     raceUrl,
     totalHorses: horses.length,
+    ...(raceDate && { date: raceDate }),
     horses
   };
 }
@@ -482,12 +554,17 @@ export async function scrapeAllCompletedRacesWithCards(db = null) {
         try {
           console.log(`  [${i + 1}/${completedRaces.length}] ${raceNumber}: ${result}`);
           
+          // Extract race time from the race page
+          const raceDateTime = await extractRaceDateFromUrl(link);
+          const raceTime = extractTimeFromDateTime(raceDateTime);
+          
           // Scrape horse data from the race link
           const horses = await scrapeRaceCardByUrl(link);
           
           // Merge horses into race object
           const raceWithHorses = {
             raceNumber,
+            time: raceTime,
             result,
             link,
             horses,
@@ -495,7 +572,7 @@ export async function scrapeAllCompletedRacesWithCards(db = null) {
           };
           
           completedRacesWithHorses.push(raceWithHorses);
-          console.log(`    ✅ Found ${horses.length} horses`);
+          console.log(`    ✅ Found ${horses.length} horses at ${raceTime}`);
           totalRaceCount++;
           
         } catch (error) {
@@ -503,6 +580,7 @@ export async function scrapeAllCompletedRacesWithCards(db = null) {
           // Still add the race, but with empty horses array
           completedRacesWithHorses.push({
             raceNumber,
+            time: 'N/A',
             result,
             link,
             horses: [],

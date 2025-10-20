@@ -1,0 +1,137 @@
+HORSE RACING SCRAPING RESULTS LOG
+======================================================================
+Timestamp: 2025-10-20T03:56:01.151Z
+Total Racetracks: 3
+Total Races Scraped: 8
+======================================================================
+
+
+[1] RACETRACK: 
+----------------------------------------------------------------------
+Track URL: /horse-racing/australia-nz/echuca
+Total Races: 3
+
+  R1. Result: 8,11,1 | Horses: 12
+     Link: /horse-racing/australia-nz/echuca/race-1-9741327
+     Horses:
+       - [1] #1 Alvin (Place: 3.10)
+       - [2] #2 Elegant Man (Place: 5.50)
+       - [3] #4 Bon Sayso (Place: 11.00)
+       - [4] #5 Brilliant Beagle (Place: 3.60)
+       - [5] #7 Tanana (Place: 1.80)
+       - [6] #8 Brazenga (Place: 1.55)
+       - [7] #9 Light The Burners (Place: 1.95)
+       - [8] #10 I Believe I Belong (Place: 6.00)
+       - [9] #11 La Reine (Place: 2.15)
+       - [10] #12 Ravens Glow (Place: 3.00)
+       - [11] #13 Flight Officer (Place: 18.00)
+       - [12] #14 My Luna (Place: 14.00)
+
+  R2. Result: 10,2,1 | Horses: 14
+     Link: /horse-racing/australia-nz/echuca/race-2-9741323
+     Horses:
+       - [1] #1 Frosted In Time (Place: 1.30)
+       - [2] #2 Above Me (Place: 1.73)
+       - [3] #4 Distinctly Summer (Place: 3.75)
+       - [4] #5 Redemption Time (Place: 5.50)
+       - [5] #6 Rydell High (Place: 27.75)
+       - [6] #7 I'm Savvy As (Place: 2.63)
+       - [7] #9 Smugglers Spot (Place: 7.00)
+       - [8] #10 Vangogh Bankcheque (Place: 1.57)
+       - [9] #11 Blondie's Award (Place: 2.40)
+       - [10] #12 Ninetyfiveinafifty (Place: 6.25)
+       - [11] #13 Raison D'rose (Place: 8.00)
+       - [12] #15 Cheers To Us (Place: 29.00)
+       - [13] #16 Oneonone (Place: 25.00)
+       - [14] #18 Terracotta Rose (Place: 6.25)
+
+  R3. Result: 8,3,9 | Horses: 10
+     Link: /horse-racing/australia-nz/echuca/race-3-9741324
+     Horses:
+       - [1] #1 Back To New York (Place: 4.20)
+       - [2] #3 Makhanda (Place: 4.20)
+       - [3] #4 Phantom's Chase (Place: 2.20)
+       - [4] #6 Taxing (Place: 2.60)
+       - [5] #8 Snitz Sonic (Place: 1.04)
+       - [6] #9 Taajwar (Place: 2.60)
+       - [7] #10 Love Kaye (Place: 1.75)
+       - [8] #11 Brookers Turbo (Place: 13.25)
+       - [9] #12 Jonii Diamond (Place: 13.25)
+       - [10] #13 Autumn Hue (Place: 2.80)
+
+
+[2] RACETRACK: 
+----------------------------------------------------------------------
+Track URL: /horse-racing/australia-nz/muswellbrook
+Total Races: 3
+
+  R1. Result: 1,3,7 | Horses: 8
+     Link: /horse-racing/australia-nz/muswellbrook/race-1-9737332
+     Horses:
+       - [1] #1 Hibiki Harmony (Place: 1.06)
+       - [2] #2 Sanzeno (Place: 1.62)
+       - [3] #3 Shadow Dane (Place: 2.50)
+       - [4] #5 Special Prophet (Place: 6.00)
+       - [5] #6 Fox Reign (Place: 3.10)
+       - [6] #7 Dreymon (Place: 2.50)
+       - [7] #8 Fleetly (Place: 1.50)
+       - [8] #9 Cheeky Nugget (Place: 7.50)
+
+  R2. Result: 1,2,9 | Horses: 8
+     Link: /horse-racing/australia-nz/muswellbrook/race-2-9737330
+     Horses:
+       - [1] #1 Tillstrom (Place: 1.55)
+       - [2] #2 Semeco (Place: 2.45)
+       - [3] #3 Dartbrook (Place: 3.40)
+       - [4] #4 Deel Me A Queen (Place: 1.09)
+       - [5] #5 Khamis (Place: 1.80)
+       - [6] #6 Our Emily (Place: 1.80)
+       - [7] #9 Rasloc (Place: 7.50)
+       - [8] #10 Reward's Daughter (Place: 6.50)
+
+  R3. Result: 12,10,7 | Horses: 11
+     Link: /horse-racing/australia-nz/muswellbrook/race-3-9737331
+     Horses:
+       - [1] #1 Jusick (Place: 7.50)
+       - [2] #2 Nulkaba Star (Place: 2.00)
+       - [3] #4 Souls Companion (Place: 1.28)
+       - [4] #5 Think Pi (Place: 7.00)
+       - [5] #6 William's Smile (Place: 6.00)
+       - [6] #7 Eddie's Charm (Place: 2.60)
+       - [7] #8 Meganhew (Place: 4.40)
+       - [8] #9 Bridego (Place: 3.90)
+       - [9] #10 Looking The Part (Place: 7.50)
+       - [10] #12 Pontevedra (Place: 1.05)
+       - [11] #13 Linda's Princess (Place: 11.00)
+
+
+[3] RACETRACK: 
+----------------------------------------------------------------------
+Track URL: /horse-racing/australia-nz/mt-isa
+Total Races: 2
+
+  R1. Result: 2,7,5 | Horses: 9
+     Link: /horse-racing/australia-nz/mt-isa/race-1-9737637
+     Horses:
+       - [1] #1 Busterkick (Place: 2.80)
+       - [2] #2 Midori Forest (Place: 1.35)
+       - [3] #4 Sacred Belief (Place: 10.00)
+       - [4] #5 Up To Us (Place: 2.70)
+       - [5] #6 Weird Goodbyes (Place: 1.50)
+       - [6] #7 Cup Of Ambition (Place: 2.25)
+       - [7] #8 Insain Flame (Place: 2.45)
+       - [8] #9 Kouklitsa (Place: 3.00)
+       - [9] #10 Helluvapunch (Place: 3.70)
+
+  R2. Result: 1,8,2 | Horses: 8
+     Link: /horse-racing/australia-nz/mt-isa/race-2-9737652
+     Horses:
+       - [1] #1 Corvalist (Place: 1.30)
+       - [2] #2 Combs (Place: 2.10)
+       - [3] #3 French Empire (Place: 1.70)
+       - [4] #4 Erotas (Place: 2.40)
+       - [5] #5 Glassout (Place: 4.60)
+       - [6] #6 Polly Hoffa (Place: 3.20)
+       - [7] #7 Superstellar (Place: 1.80)
+       - [8] #8 Bitterblue (Place: 2.50)
+
