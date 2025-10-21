@@ -618,43 +618,43 @@ export async function scrapeAllCompletedRacesWithCards(db = null) {
  * Save race data to database
  * @param {object} db - Database instance
  * @param {object} raceData - Race data with horses
- */
-async function saveRaceToDB(db, raceData) {
-  try {
-    // Create race entry
-    const newRace = {
-      id: Math.max(...(db.data.races || []).map(r => r.id), 0) + 1,
-      name: raceData.raceName,
-      track: raceData.trackName,
-      date: new Date().toISOString().split('T')[0],
-      url: raceData.raceUrl,
-      scrapedAt: raceData.scrapedAt
-    };
+//  */
+// async function saveRaceToDB(db, raceData) {
+//   try {
+//     // Create race entry
+//     const newRace = {
+//       id: Math.max(...(db.data.races || []).map(r => r.id), 0) + 1,
+//       name: raceData.raceName,
+//       track: raceData.trackName,
+//       date: new Date().toISOString().split('T')[0],
+//       url: raceData.raceUrl,
+//       scrapedAt: raceData.scrapedAt
+//     };
 
-    if (!db.data.races) db.data.races = [];
-    db.data.races.push(newRace);
+//     if (!db.data.races) db.data.races = [];
+//     db.data.races.push(newRace);
 
-    // Create horse entries linked to this race
-    if (!db.data.horses) db.data.horses = [];
+//     // Create horse entries linked to this race
+//     if (!db.data.horses) db.data.horses = [];
     
-    raceData.horses.forEach(horse => {
-      const newHorse = {
-        id: Math.max(...db.data.horses.map(h => h.id), 0) + 1,
-        number: horse.horseNumber,
-        name: horse.horseName,
-        rank: horse.rank,
-        odds: horse.odds,
-        raceId: newRace.id
-      };
-      db.data.horses.push(newHorse);
-    });
+//     raceData.horses.forEach(horse => {
+//       const newHorse = {
+//         id: Math.max(...db.data.horses.map(h => h.id), 0) + 1,
+//         number: horse.horseNumber,
+//         name: horse.horseName,
+//         rank: horse.rank,
+//         odds: horse.odds,
+//         raceId: newRace.id
+//       };
+//       db.data.horses.push(newHorse);
+//     });
 
-    await db.write();
-    console.log(`  💾 Saved to database`);
-  } catch (error) {
-    console.error(`  ❌ DB save error: ${error.message}`);
-  }
-}
+//     await db.write();
+//     console.log(`  💾 Saved to database`);
+//   } catch (error) {
+//     console.error(`  ❌ DB save error: ${error.message}`);
+//   }
+// }
 
 /**
  * Format results for JSON output
