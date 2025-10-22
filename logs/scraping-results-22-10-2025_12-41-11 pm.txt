@@ -1,0 +1,130 @@
+HORSE RACING SCRAPING RESULTS LOG
+======================================================================
+Timestamp: 2025-10-22T04:41:11.579Z
+Total Racetracks: 3
+Total Races Scraped: 8
+======================================================================
+
+
+[1] RACETRACK: Geelong
+----------------------------------------------------------------------
+Track URL: /horse-racing/australia-nz/geelong/race-1-9751569
+Total Races: 3
+
+  R1. Result: 8,6,15 | Horses: 13
+     Link: /horse-racing/australia-nz/geelong/race-1-9751569
+     Horses:
+       - [1] #1 Farag (Place: 15.00)
+       - [2] #3 Cable Dancer (Place: 2.60)
+       - [3] #5 Natural Ruler (Place: 1.75)
+       - [4] #6 Karburan (Place: 2.15)
+       - [5] #7 Captain Electric (Place: 3.70)
+       - [6] #8 Haaland (Place: 1.80)
+       - [7] #10 Suffolk Star (Place: 4.00)
+       - [8] #11 Perfetto (Place: 4.80)
+       - [9] #12 Alpine Rocket (Place: 6.00)
+       - [10] #13 Northern Barrage (Place: 5.50)
+       - [11] #14 Foire De Trone (Place: 2.60)
+       - [12] #15 Highland Glory (Place: 4.20)
+       - [13] #16 Amawasha (Place: 7.50)
+
+  R2. Result: 7,8,6 | Horses: 7
+     Link: /horse-racing/australia-nz/geelong/race-2-9751570
+     Horses:
+       - [1] #1 Artistic Genius (Place: 2.40)
+       - [2] #4 Street Conqueror (Place: 1.90)
+       - [3] #5 Under My Thumb (Place: 2.40)
+       - [4] #6 Escarpa (Place: 1.75)
+       - [5] #7 Normandy Lass (Place: 1.45)
+       - [6] #8 Altermatum (Place: 1.40)
+       - [7] #9 Mr Tickles (Place: 4.00)
+
+  R3. Result: 9,7,5 | Horses: 7
+     Link: /horse-racing/australia-nz/geelong/race-3-9751576
+     Horses:
+       - [1] #1 Mister Me (Place: 5.00)
+       - [2] #2 Otago (Place: 1.55)
+       - [3] #3 Acid Wash (Place: 2.15)
+       - [4] #5 Deep Pleasure (Place: 1.35)
+       - [5] #7 Barbaric Lad (Place: 2.05)
+       - [6] #8 El Tercero (Place: 2.70)
+       - [7] #9 Astral Flame (Place: 1.35)
+
+
+[2] RACETRACK: Eagle Farm
+----------------------------------------------------------------------
+Track URL: /horse-racing/australia-nz/eagle-farm
+Total Races: 2
+
+  R1. Result: 8,4,6 | Horses: 7
+     Link: /horse-racing/australia-nz/eagle-farm/race-1-9751622
+     Horses:
+       - [1] #1 Averred (Place: 5.00)
+       - [2] #2 Bate (Place: 4.40)
+       - [3] #3 Black Assassin (Place: 7.50)
+       - [4] #4 Tulong (Place: 1.28)
+       - [5] #5 Zephirine (Place: 5.50)
+       - [6] #6 Hard As Brok (Place: 2.45)
+       - [7] #8 Wily Jack (Place: 1.60)
+
+  R2. Result: 6,3,5 | Horses: 6
+     Link: /horse-racing/australia-nz/eagle-farm/race-2-9751626
+     Horses:
+       - [1] #2 Mercian (Place: 2.40)
+       - [2] #3 Dream Smart (Place: 2.15)
+       - [3] #4 Giliana (Place: 1.80)
+       - [4] #5 Mishani Ego (Place: 2.80)
+       - [5] #6 Cabaletto (Place: 1.45)
+       - [6] #7 Lady Zaydi (Place: 19.00)
+
+
+[3] RACETRACK: Strathalbyn
+----------------------------------------------------------------------
+Track URL: /horse-racing/australia-nz/strathalbyn
+Total Races: 3
+
+  R1. Result: 6,8,7 | Horses: 10
+     Link: /horse-racing/australia-nz/strathalbyn/race-1-9751477
+     Horses:
+       - [1] #1 Gingerbread Boy (Place: 3.50)
+       - [2] #2 Harlem Godfather (Place: 3.00)
+       - [3] #3 I'm A Millennial (Place: 7.00)
+       - [4] #4 Mahpiya Luta (Place: 9.50)
+       - [5] #5 Mckenzie (Place: 8.50)
+       - [6] #6 Niamortal (Place: 1.10)
+       - [7] #7 Sir Monica (Place: 1.80)
+       - [8] #8 Wrath (Place: 4.20)
+       - [9] #9 Kindly (Place: 2.60)
+       - [10] #10 Winston's Pride (Place: 1.55)
+
+  R2. Result: 3,5,2 | Horses: 10
+     Link: /horse-racing/australia-nz/strathalbyn/race-2-9751475
+     Horses:
+       - [1] #1 Angel Of Paradise (Place: 18.00)
+       - [2] #2 Eagle Moon (Place: 2.30)
+       - [3] #3 It's Only Magic (Place: 1.35)
+       - [4] #4 Sir Aali (Place: 3.10)
+       - [5] #5 Zadows Landing (Place: 1.28)
+       - [6] #6 Fissionable (Place: 12.00)
+       - [7] #7 Gerace (Place: 3.30)
+       - [8] #8 Heat Of The Night (Place: 1.95)
+       - [9] #10 Tenacious Zeus (Place: 2.70)
+       - [10] #11 Up To The Dedline (Place: 12.00)
+
+  R3. Result: 7,1,8 | Horses: 13
+     Link: /horse-racing/australia-nz/strathalbyn/race-3-9751476
+     Horses:
+       - [1] #1 Captain Love (Place: 6.25)
+       - [2] #2 Matino (Place: 6.25)
+       - [3] #3 Mcleod (Place: 13.25)
+       - [4] #5 Tan Tat Gold (Place: 1.91)
+       - [5] #6 Youbeeforty (Place: 2.30)
+       - [6] #7 Annanda (Place: 1.25)
+       - [7] #8 Fiora Blue (Place: 4.33)
+       - [8] #9 Flaming Eyes (Place: 1.75)
+       - [9] #10 Foxy Eagle (Place: 7.75)
+       - [10] #11 Miss Narranga (Place: 22.00)
+       - [11] #12 Moonlight Halo (Place: 9.00)
+       - [12] #13 Raavine (Place: 19.50)
+       - [13] #14 Taken On Faith (Place: 1.70)
+

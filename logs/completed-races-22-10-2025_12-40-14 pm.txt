@@ -1,0 +1,53 @@
+COMPLETED RACES LOG
+================================================================================
+Timestamp: 2025-10-22T04:40:14.370Z
+Total Racetracks: 3
+================================================================================
+
+Total Races: 8
+
+
+[1] RACETRACK: Geelong
+--------------------------------------------------------------------------------
+Country: Australia
+Track URL: /horse-racing/australia-nz/geelong/race-1-9751569
+Total Races: 3
+
+  R1. Result: 8,6,15
+     Link: /horse-racing/australia-nz/geelong/race-1-9751569
+
+  R2. Result: 7,8,6
+     Link: /horse-racing/australia-nz/geelong/race-2-9751570
+
+  R3. Result: 9,7,5
+     Link: /horse-racing/australia-nz/geelong/race-3-9751576
+
+
+[2] RACETRACK: Eagle Farm
+--------------------------------------------------------------------------------
+Country: Australia
+Track URL: /horse-racing/australia-nz/eagle-farm
+Total Races: 2
+
+  R1. Result: 8,4,6
+     Link: /horse-racing/australia-nz/eagle-farm/race-1-9751622
+
+  R2. Result: 6,3,5
+     Link: /horse-racing/australia-nz/eagle-farm/race-2-9751626
+
+
+[3] RACETRACK: Strathalbyn
+--------------------------------------------------------------------------------
+Country: Australia
+Track URL: /horse-racing/australia-nz/strathalbyn
+Total Races: 3
+
+  R1. Result: 6,8,7
+     Link: /horse-racing/australia-nz/strathalbyn/race-1-9751477
+
+  R2. Result: 3,5,2
+     Link: /horse-racing/australia-nz/strathalbyn/race-2-9751475
+
+  R3. Result: 7,1,8
+     Link: /horse-racing/australia-nz/strathalbyn/race-3-9751476
+
