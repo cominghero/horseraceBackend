@@ -13,12 +13,13 @@
     "test:strategies": "node scraper-alternative.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
+    "axios": "^1.6.5",
+    "cheerio": "1.0.0-rc.12",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
+    "express": "^4.18.2",
     "lowdb": "^3.0.0",
-    "cheerio": "1.0.0-rc.12",
-    "axios": "^1.6.5"
+    "puppeteer": "^24.26.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"

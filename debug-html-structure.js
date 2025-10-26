@@ -2,26 +2,60 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import fs from 'fs';
 
-const testRaceUrl = 'https://www.sportsbet.com.au/horse-racing/australia-nz/caulfield/race-1-9733983';
+const testRaceUrl = 'https://www.sportsbet.com.au/horse-racing/australia-nz/moonee-valley/race-1-9759568';
 
 async function inspectHTML() {
   try {
-    console.log('🔍 Fetching Sportsbet page...\n');
-    
+    console.log('🔍 Fetching Sportsbet race page...\n');
+    console.log(`URL: ${testRaceUrl}\n`);
+
     const response = await axios.get(testRaceUrl, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
       },
       timeout: 30000
     });
-    
+
+    console.log(`✅ Page fetched (${response.data.length} chars)\n`);
+
     const $ = cheerio.load(response.data);
-    
-    console.log('📊 ANALYZING HTML STRUCTURE:\n');
-    
-    // Find all elements with data-automation-id
+
+    console.log('📊 SEARCHING FOR DATE/TIME:\n');
+
+    // 1. Check for results-header
+    console.log('1️⃣ Looking for results-header:');
+    const resultsHeader = $('div[data-automation-id="results-header"]');
+    console.log(`   Found: ${resultsHeader.length}`);
+
+    if (resultsHeader.length > 0) {
+      const cells = resultsHeader.find('> div');
+      console.log(`   Cells in header: ${cells.length}\n`);
+      cells.each((i, cell) => {
+        const text = $(cell).text().trim();
+        console.log(`     Cell ${i}: "${text}"`);
+      });
+    }
+
+    // 2. Search for date pattern in text
+    console.log('\n2️⃣ Searching for date patterns in page text:');
+    const bodyText = $('body').text();
+    const dateMatches = bodyText.match(/\d{1,2}\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2}:\d{2}/g);
+    if (dateMatches) {
+      console.log(`   Found: ${[...new Set(dateMatches)].join(', ')}`);
+    } else {
+      console.log('   None found');
+    }
+
+    // 3. Check for span.size16
+    console.log('\n3️⃣ Looking for span.size16_f6irgbz or similar:');
+    const timeSpans = $('span[class*="size16"]');
+    console.log(`   Found: ${timeSpans.length}`);
+
+    // 4. Find all automation IDs
+    console.log('\n4️⃣ All data-automation-id values:');
     const autoDataElements = $('[data-automation-id]');
-    console.log(`1️⃣ Elements with data-automation-id: ${autoDataElements.length}`);
+    console.log(`   Total elements: ${autoDataElements.length}`);
     
     // Get unique data-automation-id values
     const uniqueIds = new Set();

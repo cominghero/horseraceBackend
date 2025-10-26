@@ -3,6 +3,8 @@ import * as cheerio from 'cheerio';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import puppeteer from 'puppeteer';
+import { log } from 'console';
 
 // Get the directory name for file operations
 const __filename = fileURLToPath(import.meta.url);
@@ -10,6 +12,89 @@ const __dirname = path.dirname(__filename);
 
 const SPORTSBET_URL = 'https://www.sportsbet.com.au/racing-schedule/horse/today';
 const LOGS_DIR = path.join(__dirname, 'logs');
+
+/**
+ * Fetch HTML content using Puppeteer (for JavaScript-rendered pages)
+ * Waits for page to fully load and JS to execute before returning HTML
+ * @param {string} url - The URL to fetch
+ * @param {number} waitTime - Additional wait time in milliseconds (default: 100ms)
+ * @param {number} retries - Number of retry attempts (default: 2)
+ * @returns {Promise<string>} The fully-rendered HTML content
+ */
+async function fetchWithPuppeteer(url, waitTime = 100, retries = 2) {
+  let lastError;
+
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    let browser;
+    try {
+      if (attempt > 0) {
+        console.log(`🔄 Retry attempt ${attempt}/${retries} for ${url}`);
+        // Wait a bit before retrying
+        await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+      }
+
+      browser = await puppeteer.launch({
+        headless: true,
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-accelerated-2d-canvas',
+          '--disable-gpu'
+        ]
+      });
+
+      const page = await browser.newPage();
+
+      // Set user agent
+      await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
+
+      // Block unnecessary resources to speed up loading
+      await page.setRequestInterception(true);
+      page.on('request', (req) => {
+        const resourceType = req.resourceType();
+        // Block images, fonts, and media to load faster
+        if (['image', 'font', 'media'].includes(resourceType)) {
+          req.abort();
+        } else {
+          req.continue();
+        }
+      });
+
+      // Navigate with more lenient wait condition and longer timeout
+      await page.goto(url, {
+        waitUntil: 'domcontentloaded', // Changed from 'networkidle0' for faster loading
+        timeout: 60000 // Increased to 60 seconds
+      });
+
+      // Additional wait time for any delayed JS rendering (use setTimeout instead of deprecated waitForTimeout)
+      if (waitTime > 0) {
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+      }
+
+      // Get the fully-rendered HTML
+      const html = await page.content();
+
+      await browser.close();
+      return html;
+
+    } catch (error) {
+      lastError = error;
+      if (browser) {
+        await browser.close();
+      }
+
+      // If this is the last attempt, throw the error
+      if (attempt === retries) {
+        console.error(`❌ Puppeteer error for ${url} after ${retries + 1} attempts:`, error.message);
+        throw error;
+      }
+    }
+  }
+
+  // This should never be reached, but just in case
+  throw lastError;
+}
 
 /**
  * Ensure logs directory exists
@@ -146,13 +231,11 @@ export function logCompletedRaces(completedRacesData) {
 export async function scrapeCompletedRaces() {
   try {
     console.log('Fetching racing schedule from Sportsbet...');
-    const response = await axios.get(SPORTSBET_URL, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-      }
-    });
 
-    const $ = cheerio.load(response.data);
+    // Use Puppeteer to fetch fully-rendered HTML (waits 500ms after page load)
+    const html = await fetchWithPuppeteer(SPORTSBET_URL, 500); // 0.5s - safe for production with Australian IP
+
+    const $ = cheerio.load(html);
     const results = [];
 
     // Find all tr tags (racetrack rows)
@@ -273,19 +356,19 @@ function isRaceResult(text) {
 export async function scrapeRaceCardByUrl(raceUrl) {
   try {
     // Convert relative URL to full URL if needed
-    const fullUrl = raceUrl.startsWith('http') 
-      ? raceUrl 
+    const fullUrl = raceUrl.startsWith('http')
+      ? raceUrl
       : `https://www.sportsbet.com.au${raceUrl}`;
-    
-    // console.log(`\n📍 Fetching race card from: ${fullUrl}`);
-    
+
+    // Use simple axios fetch - race card data is in HTML, no JS rendering needed
     const response = await axios.get(fullUrl, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
       }
     });
+    const html = response.data;
 
-    const $ = cheerio.load(response.data);
+    const $ = cheerio.load(html);
     const horses = [];
 
     // Find all horse outcome containers
@@ -351,6 +434,20 @@ export async function scrapeRaceCardByUrl(raceUrl) {
         if (fluc2Match) fluc2 = fluc2Match[1].replace(',', '.');
       }
 
+      // ========== JOCKEY NAME ==========
+      // Located in: span[data-automation-id="racecard-outcome-info-jockey"]
+      const jockeySpan = $container.find('span[data-automation-id="racecard-outcome-info-jockey"]');
+      let jockey = 'N/A';
+
+      if (jockeySpan.length > 0) {
+        const jockeyText = jockeySpan.text().trim();
+        // Format is "J: John Allen", extract just the name
+        const jockeyMatch = jockeyText.match(/^J:\s*(.+)$/);
+        if (jockeyMatch) {
+          jockey = jockeyMatch[1].trim();
+        }
+      }
+
       // ========== FIXED ODDS ==========
       // Located in: div[class*="priceContainer_"] > div[data-automation-id*="L-price"]
       // Each has button > div > div > div > span (inside the button)
@@ -397,6 +494,7 @@ export async function scrapeRaceCardByUrl(raceUrl) {
         rank,
         horseNumber,
         horseName,
+        jockey,
         odds: {
           open,
           fluc1,
@@ -408,14 +506,8 @@ export async function scrapeRaceCardByUrl(raceUrl) {
       };
 
       horses.push(horseData);
-
-      // Log to console for verification
-      // console.log(`\n🐴 Rank ${rank} - Horse #${horseNumber}: ${horseName}`);
-      // console.log(`   📊 Odds: Open=${open} | Fluc1=${fluc1} | Fluc2=${fluc2}`);
-      // console.log(`   💰 Fixed: Win=${winFixed} | Place=${placeFixed} | Each Way=${eachWayFixed}`);
     });
-    // console.log(horses);
-    
+
     console.log(`\n✅ Successfully scraped ${horses.length} horses from race card\n`);
     return horses;
 
@@ -428,6 +520,11 @@ export async function scrapeRaceCardByUrl(raceUrl) {
 /**
  * Extract race date/time from the results header
  * Looks for: <div data-automation-id="results-header">...<span>19 Oct 10:47</span></div>
+ *
+ * NOTE: This function often returns null because Sportsbet uses JavaScript to render times.
+ * The results-header element is not present in static HTML for most races.
+ * Times will default to 'TBD' when this fails.
+ *
  * @param {string} raceUrl - The race URL to fetch
  * @returns {Promise<string>} Race date (e.g., "19 Oct 10:47") or null if not found
  */
@@ -727,11 +824,243 @@ async function main() {
 }
 
 // Run if executed directly
+/**
+ * Scrape upcoming races from racing schedule page (today/tomorrow/specific date)
+ * @param {string} scheduleUrl - The schedule URL (e.g., 'tomorrow', '2025-10-25', or full URL)
+ * @returns {Promise<Array>} Array of racetrack data with upcoming races (Australia only)
+ */
+export async function scrapeUpcomingRaces(scheduleUrl = 'today') {
+  try {
+    // Build full URL if relative path provided
+    const fullUrl = scheduleUrl.startsWith('http')
+      ? scheduleUrl
+      : `https://www.sportsbet.com.au/racing-schedule/${scheduleUrl}`;
+
+    console.log(`\n📅 Fetching upcoming races from: ${fullUrl}\n`);
+
+    // Use Puppeteer to fetch fully-rendered HTML (waits 1000ms after page load)
+    const html = await fetchWithPuppeteer(fullUrl, 1000); // 1s - safe for production with Australian IP
+
+    const $ = cheerio.load(html);
+    
+    // List of known New Zealand racetracks to exclude
+    const nzTracks = [
+      'matamata', 'ellerslie', 'trentham', 'riccarton', 'hastings',
+      'awapuni', 'avondale', 'te-rapa', 'ruakaka', 'pukekohe',
+      'rotorua', 'wanganui', 'new-plymouth', 'ashburton', 'winton',
+      'gore', 'timaru', 'oamaru', 'cromwell', 'otaki'
+    ];
+
+    // Find all race links with Fixed Odds icon (Australia only, exclude New Zealand)
+    const raceLinks = $('a[href*="/horse-racing/"]').filter(function() {
+      const href = $(this).attr('href');
+      const hasFixedOddsIcon = $(this).find('i.fixedodds_f1q5kl4f').length > 0;
+
+      // Exclude international races
+      const isNotInternational = !href.includes('/international/');
+
+      // Exclude New Zealand tracks by checking track name in URL
+      const urlLower = href.toLowerCase();
+      const isNotNZTrack = !nzTracks.some(track => urlLower.includes(`/${track}/`));
+
+      return href && href.includes('/race-') && hasFixedOddsIcon && isNotInternational && isNotNZTrack;
+    });
+
+    if (raceLinks.length === 0) {
+      console.warn('⚠️ No Australian race links with Fixed Odds found on page');
+      return [];
+    }
+
+    console.log(`✅ Found ${raceLinks.length} Australian races with Fixed Odds\n`);
+
+    // Group races by racetrack
+    const racetrackMap = new Map();
+    console.log($(raceLinks[0]).html());
+    
+    raceLinks.each((index, link) => {
+      const $link = $(link);
+      const raceUrl = $link.attr('href') || '';
+
+      // Extract racetrack name from URL
+      // URL format: /horse-racing/australia-nz/moonee-valley/race-6-9759417
+      const urlParts = raceUrl.split('/');
+      const racetrackSlug = urlParts.length >= 2 ? urlParts[urlParts.length - 2] : '';
+      const racetrackName = racetrackSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+
+      if (!racetrackName) {
+        return; // Skip if no valid racetrack name
+      }
+
+      // Extract race number from title attribute
+      const raceTitle = $link.attr('title') || '';
+      const raceNumberMatch = raceTitle.match(/^R(\d+)/);
+      const raceNumber = raceNumberMatch ? `R${raceNumberMatch[1]}` : `R${index + 1}`;
+
+      // Extract race TIME (HH:MM format)
+      // Look for any span containing time pattern (e.g., "11:00", "3:45")
+      let raceTime = 'TBD'; // Default for upcoming races
+      // console.log($link.find('span'));
+      
+      // Search through all spans in the link to find time pattern
+      $link.find('span').each((_, span) => {
+        const text = $(span).text().trim();
+        
+        // Match time patterns like "11:00", "3:45", "12:30"
+        if (text.match(/^\d{1,2}:\d{2}$/)) {
+          raceTime = text;
+          return false; // Break the loop once time is found
+        }
+      });
+
+      // Group by racetrack
+      if (!racetrackMap.has(racetrackName)) {
+        racetrackMap.set(racetrackName, {
+          racetrack: racetrackName,
+          tracklinkUrl: raceUrl.split('/race-')[0] || '',
+          completedRaces: []
+        });
+      }
+
+      racetrackMap.get(racetrackName).completedRaces.push({
+        raceNumber,
+        time: raceTime,
+        result: '',
+        link: raceUrl,
+        horses: [],
+        horseCount: 0
+      });
+    });
+
+    const allRacetracksData = Array.from(racetrackMap.values());
+
+    // Log results
+    allRacetracksData.forEach(track => {
+      console.log(`🏇 ${track.racetrack}: ${track.completedRaces.length} races`);
+    });
+
+    console.log(`\n📊 Total Australian racetracks: ${allRacetracksData.length}`);
+    console.log(`📊 Total upcoming races: ${allRacetracksData.reduce((sum, track) => sum + track.completedRaces.length, 0)}\n`);
+
+    return allRacetracksData;
+  } catch (error) {
+    console.error('❌ Error scraping upcoming races:', error.message);
+    return [];
+  }
+}
+
+/**
+ * Scrape upcoming races with full horse data (similar to scrapeAllCompletedRacesWithCards)
+ * @param {string} scheduleUrl - Schedule URL parameter ('today', 'tomorrow', or '2025-10-25')
+ * @returns {Promise<Array>} Array of racetrack data with upcoming races and horses
+ */
+export async function scrapeAllUpcomingRacesWithCards(scheduleUrl = 'today') {
+  try {
+    console.log(`\n╔════════════════════════════════════════╗`);
+    console.log(`║  SCRAPING UPCOMING RACES WITH HORSES  ║`);
+    console.log(`║  Date: ${scheduleUrl.padEnd(30)} ║`);
+    console.log(`╚════════════════════════════════════════╝\n`);
+
+    // Step 1: Get all upcoming races (racetracks and race links)
+    const racetracks = await scrapeUpcomingRaces(scheduleUrl);
+    console.log(racetracks);
+    if (racetracks.length === 0) {
+      console.log('⚠️  No upcoming races found');
+      return [];
+    }
+
+    const allRacetracksData = [];
+    let totalRaceCount = 0;
+
+    // Step 2: For each racetrack, scrape horse data for each race
+    for (const trackData of racetracks) {
+      const { racetrack, tracklinkUrl, completedRaces } = trackData;
+
+      console.log(`\n🏇 ${racetrack.toUpperCase()}`);
+      console.log(`${'─'.repeat(50)}`);
+
+      const upcomingRacesWithHorses = [];
+
+      for (const race of completedRaces) {
+        const { raceNumber, time, link } = race; // Extract time from race object
+        totalRaceCount++;
+
+        console.log(`\n  📍 ${raceNumber} - ${time} - ${link}`);
+
+        try {
+          // Scrape horse data for this race
+          const horses = await scrapeRaceCardByUrl(link);
+
+          if (horses && horses.length > 0) {
+            console.log(`     ✅ Found ${horses.length} horses`);
+
+            // Use the time from scrapeUpcomingRaces (usually 'TBD' for upcoming races)
+            upcomingRacesWithHorses.push({
+              raceNumber,
+              time: time || 'TBD', // Use time from schedule page (defaults to TBD)
+              result: '', // No result for upcoming races
+              link,
+              horses,
+              horseCount: horses.length
+            });
+          } else {
+            console.log(`     ⚠️  No horses found`);
+
+            // Still add the race, but with empty horses array
+            upcomingRacesWithHorses.push({
+              raceNumber,
+              time: time || 'TBD', // Use time from schedule page (defaults to TBD)
+              result: '',
+              link,
+              horses: [],
+              horseCount: 0
+            });
+          }
+
+          // Small delay to avoid overwhelming the server
+          await new Promise(resolve => setTimeout(resolve, 500));
+
+        } catch (error) {
+          console.error(`     ❌ Error scraping race: ${error.message}`);
+
+          // Still add the race, but with empty horses array
+          upcomingRacesWithHorses.push({
+            raceNumber,
+            time: time || 'TBD', // Use time from schedule page (defaults to TBD)
+            result: '',
+            link,
+            horses: [],
+            horseCount: 0
+          });
+        }
+      }
+
+      // Add this racetrack with all its races and horses
+      const trackWithHorses = {
+        racetrack,
+        tracklinkUrl,
+        completedRaces: upcomingRacesWithHorses
+      };
+
+      allRacetracksData.push(trackWithHorses);
+    }
+
+    console.log(`\n╔════════════════════════════════════════╗`);
+    console.log(`║  COMPLETED: Scraped ${totalRaceCount} races        ║`);
+    console.log(`╚════════════════════════════════════════╝\n`);
+
+    return allRacetracksData;
+
+  } catch (error) {
+    console.error('❌ Error scraping upcoming races with horses:', error.message);
+    throw error;
+  }
+}
+
 if (import.meta.url === `file://${process.argv[1]}`) {
   // Check for command line argument to choose which test to run
   const testType = process.argv[2];
   const urlParam = process.argv[3];
-  
+
   if (testType === 'race-card') {
     testRaceCardScraper(urlParam);
   } else {

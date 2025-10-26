@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import db from './db.js';
-import { scrapeCompletedRaces, formatAsJSON, scrapeRaceCardByUrl, formatRaceCardAsJSON, scrapeAllCompletedRacesWithCards, logCompletedRaces } from './scraper.js';
+import { scrapeCompletedRaces, formatAsJSON, scrapeRaceCardByUrl, formatRaceCardAsJSON, scrapeAllCompletedRacesWithCards, logCompletedRaces, scrapeAllUpcomingRacesWithCards } from './scraper.js';
 
 dotenv.config();
 
@@ -58,9 +58,9 @@ app.post('/api/scrape/race-card', async (req, res) => {
 app.post('/api/scrape/all-races', async (req, res) => {
   try {
     console.log('\n📡 API Request: Scraping all completed races with race cards...\n');
-    
+
     const allRaceData = await scrapeAllCompletedRacesWithCards(db);
-    
+
     res.json({
       status: 'success',
       timestamp: new Date().toISOString(),
@@ -71,6 +71,29 @@ app.post('/api/scrape/all-races', async (req, res) => {
   } catch (error) {
     console.error('Scrape all races error:', error);
     res.status(500).json({ error: 'Failed to scrape all races', message: error.message });
+  }
+});
+
+// Scraper endpoint - Scrape all upcoming races with race cards
+app.post('/api/scrape/upcoming/:date', async (req, res) => {
+  try {
+    const { date } = req.params; // 'today', 'tomorrow', or '2025-10-25'
+
+    console.log(`\n📡 API Request: Scraping upcoming races for ${date}...\n`);
+
+    const allRaceData = await scrapeAllUpcomingRacesWithCards(date);
+
+    res.json({
+      status: 'success',
+      timestamp: new Date().toISOString(),
+      source: 'Sportsbet Australia',
+      scheduleDate: date,
+      totalRaces: allRaceData.length,
+      data: allRaceData
+    });
+  } catch (error) {
+    console.error('Scrape upcoming races error:', error);
+    res.status(500).json({ error: 'Failed to scrape upcoming races', message: error.message });
   }
 });
 
