@@ -233,7 +233,7 @@ export async function scrapeCompletedRaces() {
     console.log('Fetching racing schedule from Sportsbet...');
 
     // Use Puppeteer to fetch fully-rendered HTML (waits 500ms after page load)
-    const html = await fetchWithPuppeteer(SPORTSBET_URL, 500); // 0.5s - safe for production with Australian IP
+    const html = await fetchWithPuppeteer(SPORTSBET_URL, 20000);// 0.5s - safe for production with Australian IP
 
     const $ = cheerio.load(html);
     const results = [];
@@ -839,7 +839,7 @@ export async function scrapeUpcomingRaces(scheduleUrl = 'today') {
     console.log(`\n📅 Fetching upcoming races from: ${fullUrl}\n`);
 
     // Use Puppeteer to fetch fully-rendered HTML (waits 1000ms after page load)
-    const html = await fetchWithPuppeteer(fullUrl, 1000); // 1s - safe for production with Australian IP
+    const html = await fetchWithPuppeteer(fullUrl, 30000); // 1s - safe for production with Australian IP
 
     const $ = cheerio.load(html);
     
@@ -851,19 +851,19 @@ export async function scrapeUpcomingRaces(scheduleUrl = 'today') {
       'gore', 'timaru', 'oamaru', 'cromwell', 'otaki'
     ];
 
-    // Find all race links with Fixed Odds icon (Australia only, exclude New Zealand)
+    // Find all Australian race links (with or without Fixed Odds icon)
     const raceLinks = $('a[href*="/horse-racing/"]').filter(function() {
       const href = $(this).attr('href');
-      const hasFixedOddsIcon = $(this).find('i.fixedodds_f1q5kl4f').length > 0;
 
-      // Exclude international races
-      const isNotInternational = !href.includes('/international/');
+      // ONLY include Australia races (must be in /australia-nz/ path)
+      const isAustraliaRegion = href.includes('/australia-nz/');
 
       // Exclude New Zealand tracks by checking track name in URL
       const urlLower = href.toLowerCase();
       const isNotNZTrack = !nzTracks.some(track => urlLower.includes(`/${track}/`));
 
-      return href && href.includes('/race-') && hasFixedOddsIcon && isNotInternational && isNotNZTrack;
+      // Must have: race link, Australia region, NOT NZ track (icon check removed)
+      return href && href.includes('/race-') && isAustraliaRegion && isNotNZTrack;
     });
 
     if (raceLinks.length === 0) {
@@ -899,15 +899,16 @@ export async function scrapeUpcomingRaces(scheduleUrl = 'today') {
       // Extract race TIME (HH:MM format)
       // Look for any span containing time pattern (e.g., "11:00", "3:45")
       let raceTime = 'TBD'; // Default for upcoming races
-      // console.log($link.find('span'));
-      
+
       // Search through all spans in the link to find time pattern
       $link.find('span').each((_, span) => {
         const text = $(span).text().trim();
-        
+
         // Match time patterns like "11:00", "3:45", "12:30"
-        if (text.match(/^\d{1,2}:\d{2}$/)) {
-          raceTime = text;
+        // Also match patterns with AM/PM or other text
+        const timeMatch = text.match(/(\d{1,2}:\d{2})/);
+        if (timeMatch) {
+          raceTime = timeMatch[1];
           return false; // Break the loop once time is found
         }
       });
