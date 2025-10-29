@@ -839,7 +839,7 @@ export async function scrapeUpcomingRaces(scheduleUrl = 'today') {
     console.log(`\n📅 Fetching upcoming races from: ${fullUrl}\n`);
 
     // Use Puppeteer to fetch fully-rendered HTML (waits 1000ms after page load)
-    const html = await fetchWithPuppeteer(fullUrl, 1000); // 1s - safe for production with Australian IP
+    const html = await fetchWithPuppeteer(fullUrl, 30000); // 1s - safe for production with Australian IP
 
     const $ = cheerio.load(html);
     

@@ -6,8 +6,10 @@ import { dirname, join } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Database file path
-const dbFile = join(__dirname, 'db.json');
+// Database file path - use environment variable in production, local path in dev
+const dbFile = process.env.DB_PATH || join(__dirname, 'db.json');
+
+console.log('Database location:', dbFile);
 
 // Define default data structure
 const defaultData = {

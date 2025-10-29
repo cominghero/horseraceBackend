@@ -94,11 +94,28 @@ PORT=5000
 NODE_ENV=development
 ```
 
+## Deployment to Render
+
+See [RENDER_DEPLOYMENT.md](RENDER_DEPLOYMENT.md) for complete deployment instructions.
+
+Quick steps:
+1. Push code to GitHub/GitLab
+2. Create Web Service on Render
+3. Set environment variables
+4. Deploy!
+
+Your backend URL: `https://your-service.onrender.com`
+
+## Notes
+
+- ⚠️ **Database on Render free tier is ephemeral** (resets on restart)
+- First scraping request may be slow (Puppeteer startup)
+- Migrate to PostgreSQL/MongoDB for production data persistence
+
 ## Next Steps
 
-- Connect to a database (MongoDB, PostgreSQL, etc.)
+- ✅ Deploy to Render (see RENDER_DEPLOYMENT.md)
+- Connect to persistent database (MongoDB Atlas, PostgreSQL)
 - Add authentication/authorization
-- Add input validation
-- Add proper error handling
-- Add logging
-- Deploy to production
+- Add input validation and error handling
+- Set up monitoring and alerts
